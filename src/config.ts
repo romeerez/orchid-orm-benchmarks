@@ -6,17 +6,23 @@ dotenv.config({ path: '.env' });
 
 const env = z
   .object({
-    NODE_ENV: z
-      .literal('development')
-      .or(z.literal('production'))
-      .default('development'),
-    DATABASE_URL: z.string(),
+    PORT: z.number().default(3000),
   })
-  .or(
-    z.object({
-      NODE_ENV: z.literal('test'),
-      DATABASE_URL_TEST: z.string().optional(),
-    })
+  .and(
+    z
+      .object({
+        NODE_ENV: z
+          .literal('development')
+          .or(z.literal('production'))
+          .default('development'),
+        DATABASE_URL: z.string(),
+      })
+      .or(
+        z.object({
+          NODE_ENV: z.literal('test'),
+          DATABASE_URL_TEST: z.string().optional(),
+        })
+      )
   )
   .parse(process.env);
 

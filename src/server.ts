@@ -1,35 +1,7 @@
-import fastify from 'fastify';
+import { app } from './app';
 import { config } from './config';
-import { routes } from './routes';
-import { ZodError } from 'zod';
 
-const app = fastify({ logger: config.logger });
-
-app.register(routes);
-
-app.setErrorHandler(function (error, request, reply) {
-  // Log error
-  this.log.error(error);
-
-  if (error instanceof ZodError) {
-    reply.status(422).send({
-      error: 'Validation failed',
-      issues: error.issues,
-    });
-  } else {
-    reply.status(500).send({
-      error: 'Something went wrong',
-    });
-  }
+app.listen({ port: config.PORT }).catch((err) => {
+  app.log.error(err);
+  process.exit(1);
 });
-
-const start = async () => {
-  try {
-    await app.listen({ port: 3000 });
-  } catch (err) {
-    app.log.error(err);
-    process.exit(1);
-  }
-};
-
-start();

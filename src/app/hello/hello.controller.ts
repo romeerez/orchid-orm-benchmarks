@@ -1,7 +1,7 @@
-import { requestHandler } from '../../lib/requestHandler';
+import { routeHandler } from '../../lib/routeHandler';
 import { z } from 'zod';
 
-export const helloController = requestHandler(
+export const helloController = routeHandler(
   {
     result: {
       hello: z.string(),

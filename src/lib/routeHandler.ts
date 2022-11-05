@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { z, ZodObject, ZodRawShape } from 'zod';
 import { config } from '../config';
 
-export const requestHandler = <
+export const routeHandler = <
   Params extends ZodRawShape,
   Query extends ZodRawShape,
   Body extends ZodRawShape,

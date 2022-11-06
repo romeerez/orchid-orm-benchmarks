@@ -2,6 +2,7 @@ import fastify from 'fastify';
 import { config } from './config';
 import { routes } from './routes';
 import { ZodError } from 'zod';
+import { ApiError } from './lib/errors';
 
 export const app = fastify({ logger: config.logger });
 
@@ -15,6 +16,10 @@ app.setErrorHandler(function (error, request, reply) {
     reply.status(422).send({
       error: 'Validation failed',
       issues: error.issues,
+    });
+  } else if (error instanceof ApiError) {
+    reply.status(error.statusCode).send({
+      error: error.message,
     });
   } else {
     reply.status(500).send({

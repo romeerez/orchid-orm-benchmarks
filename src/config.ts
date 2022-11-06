@@ -14,6 +14,7 @@ const env = z
       .default('development'),
     DATABASE_URL: z.string(),
     DATABASE_URL_TEST: z.string().optional(),
+    JWT_SECRET: z.string(),
   })
   .parse(process.env);
 

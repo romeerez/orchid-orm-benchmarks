@@ -1,5 +1,6 @@
 import { porm } from 'porm';
 import { config } from './config';
+import { UserModel } from './app/user/user.model';
 
 export const db = porm(
   {
@@ -7,6 +8,6 @@ export const db = porm(
     log: true,
   },
   {
-    // models will be listed here
+    user: UserModel,
   }
 );

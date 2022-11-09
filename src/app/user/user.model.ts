@@ -1,5 +1,6 @@
 import { Model } from '../../lib/model';
 import { modelToZod } from 'porm-schema-to-zod';
+import { UserFollowModel } from './userFollow.model';
 
 export class UserModel extends Model {
   table = 'user';
@@ -10,6 +11,18 @@ export class UserModel extends Model {
     password: t.text().min(8).max(100),
     ...t.timestamps(),
   }));
+
+  relations = {
+    follows: this.hasMany(() => UserFollowModel, {
+      primaryKey: 'id',
+      foreignKey: 'followingId',
+    }),
+
+    followings: this.hasMany(() => UserFollowModel, {
+      primaryKey: 'id',
+      foreignKey: 'followerId',
+    }),
+  };
 }
 
 export const userSchema = modelToZod(UserModel);

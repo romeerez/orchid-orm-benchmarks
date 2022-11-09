@@ -1,6 +1,7 @@
 import { porm } from 'porm';
 import { config } from './config';
 import { UserModel } from './app/user/user.model';
+import { UserFollowModel } from './app/user/userFollow.model';
 
 export const db = porm(
   {
@@ -9,5 +10,6 @@ export const db = porm(
   },
   {
     user: UserModel,
+    userFollow: UserFollowModel,
   }
 );

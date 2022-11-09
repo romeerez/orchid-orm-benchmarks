@@ -46,7 +46,7 @@ describe('user controller', () => {
       const res = await testRequest.post('/users', data);
 
       expect(res.json()).toMatchObject({
-        error: 'Username is already taken',
+        message: 'Username is already taken',
       });
     });
 
@@ -57,7 +57,7 @@ describe('user controller', () => {
       const res = await testRequest.post('/users', data);
 
       expect(res.json()).toMatchObject({
-        error: 'Email is already taken',
+        message: 'Email is already taken',
       });
     });
   });
@@ -93,7 +93,7 @@ describe('user controller', () => {
       });
 
       expect(res.json()).toMatchObject({
-        error: 'Email or password is invalid',
+        message: 'Email or password is invalid',
       });
     });
 
@@ -106,7 +106,72 @@ describe('user controller', () => {
       });
 
       expect(res.json()).toMatchObject({
-        error: 'Email or password is invalid',
+        message: 'Email or password is invalid',
+      });
+    });
+  });
+
+  describe('POST /users/:username/follow', () => {
+    it('should follow a user', async () => {
+      const currentUser = await userFactory.create();
+      const userToFollow = await userFactory.create();
+
+      await testRequest
+        .as(currentUser)
+        .post(`/users/${userToFollow.username}/follow`);
+
+      const follows = await db.userFollow.where({
+        followingId: userToFollow.id,
+      });
+      expect(follows).toEqual([
+        {
+          followerId: currentUser.id,
+          followingId: userToFollow.id,
+        },
+      ]);
+    });
+
+    it('should return not found error when no user found by username', async () => {
+      const currentUser = await userFactory.create();
+
+      const res = await testRequest
+        .as(currentUser)
+        .post(`/users/lalala/follow`);
+
+      expect(res.json()).toEqual({
+        message: 'Record is not found',
+      });
+    });
+  });
+
+  describe('DELETE /users/:username/follow', () => {
+    it('should unfollow a user', async () => {
+      const currentUser = await userFactory.create();
+      const userToFollow = await userFactory.create({
+        follows: { create: [{ followerId: currentUser.id }] },
+      });
+
+      await testRequest
+        .as(currentUser)
+        .delete(`/users/${userToFollow.username}/follow`);
+
+      const exists = await db.userFollow
+        .where({
+          followingId: userToFollow.id,
+        })
+        .exists();
+      expect(exists).toEqual(false);
+    });
+
+    it('should return not found error when no user found by username', async () => {
+      const currentUser = await userFactory.create();
+
+      const res = await testRequest
+        .as(currentUser)
+        .post(`/users/lalala/follow`);
+
+      expect(res.json()).toEqual({
+        message: 'Record is not found',
       });
     });
   });

@@ -3,3 +3,9 @@ export class ApiError extends Error {
     super(message);
   }
 }
+
+export class UnauthorizedError extends ApiError {
+  constructor() {
+    super('Unauthorized', 401);
+  }
+}

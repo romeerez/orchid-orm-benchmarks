@@ -7,6 +7,7 @@ import { userSchema } from './user.model';
 import { ApiError } from '../../lib/errors';
 import { comparePassword } from '../../lib/password';
 import { omit } from '../../lib/utils';
+import { getCurrentUserId } from './user.service';
 
 export const registerUserRoute = routeHandler(
   {
@@ -49,7 +50,7 @@ export const registerUserRoute = routeHandler(
   }
 );
 
-export const loginUser = routeHandler(
+export const loginUserRoute = routeHandler(
   {
     body: userSchema.pick({
       email: true,
@@ -79,5 +80,44 @@ export const loginUser = routeHandler(
       user: omit(user, 'password'),
       token: createToken({ id: user.id }),
     };
+  }
+);
+
+export const followUserRoute = routeHandler(
+  {
+    params: userSchema.pick({
+      username: true,
+    }),
+  },
+  async (req) => {
+    const userId = getCurrentUserId(req);
+
+    await db.user
+      .findBy({
+        username: req.params.username,
+      })
+      .follows.create({
+        followerId: userId,
+      });
+  }
+);
+
+export const unfollowUserRoute = routeHandler(
+  {
+    params: userSchema.pick({
+      username: true,
+    }),
+  },
+  async (req) => {
+    const userId = getCurrentUserId(req);
+
+    await db.user
+      .findBy({
+        username: req.params.username,
+      })
+      .follows.findBy({
+        followerId: userId,
+      })
+      .delete();
   }
 );

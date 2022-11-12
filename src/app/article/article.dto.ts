@@ -1,6 +1,6 @@
 import { articleSchema } from './article.model';
-import { userSchema } from '../user/user.model';
 import { z } from 'zod';
+import { userDto } from '../user/user.dto';
 
 export const articleDto = articleSchema
   .pick({
@@ -14,14 +14,6 @@ export const articleDto = articleSchema
     z.object({
       tags: z.string().array(),
       favorited: z.boolean(),
-      author: userSchema
-        .pick({
-          username: true,
-        })
-        .and(
-          z.object({
-            following: z.boolean(),
-          })
-        ),
+      author: userDto,
     })
   );

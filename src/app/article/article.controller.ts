@@ -1,9 +1,9 @@
 import { routeHandler } from '../../lib/routeHandler';
-import { db } from '../../db';
 import { getOptionalCurrentUserId } from '../user/user.service';
 import { z } from 'zod';
 import { UnauthorizedError } from '../../lib/errors';
 import { articleDto } from './article.dto';
+import { articleRepo } from './article.repo';
 
 export const listArticlesRoute = routeHandler(
   {
@@ -24,27 +24,8 @@ export const listArticlesRoute = routeHandler(
   (req) => {
     const currentUserId = getOptionalCurrentUserId(req);
 
-    let query = db.article
-      .select(
-        'slug',
-        'title',
-        'body',
-        'favoritesCount',
-        'createdAt',
-        'updatedAt',
-        {
-          tags: (q) => q.tags.pluck('name'),
-          favorited: currentUserId
-            ? (q) => q.favorites.where({ userId: currentUserId }).exists()
-            : db.article.raw((t) => t.boolean(), 'false'),
-          author: (q) =>
-            q.author.select('username', {
-              following: currentUserId
-                ? (q) => q.follows.where({ followerId: currentUserId }).exists()
-                : db.article.raw((t) => t.boolean(), 'false'),
-            }),
-        }
-      )
+    let query = articleRepo
+      .selectDto(currentUserId)
       .order({
         createdAt: 'DESC',
       })
@@ -52,32 +33,22 @@ export const listArticlesRoute = routeHandler(
       .offset(req.query.offset);
 
     if (req.query.author) {
-      query = query.whereExists('author', (q) =>
-        q.where({ username: req.query.author })
-      );
+      query = query.filterByAuthorUsername(req.query.author);
     }
 
     if (req.query.tag) {
-      query = query.whereExists('tags', (q) =>
-        q.where({ name: req.query.tag })
-      );
+      query = query.filterByTag(req.query.tag);
     }
 
     if (req.query.feed || req.query.favorite) {
       if (!currentUserId) throw new UnauthorizedError();
 
       if (req.query.feed) {
-        query = query.whereExists('author', (q) =>
-          q.whereExists('follows', (q) =>
-            q.where({ followerId: currentUserId })
-          )
-        );
+        query = query.filterForUserFeed(currentUserId);
       }
 
       if (req.query.favorite) {
-        query = query.whereExists('favorites', (q) =>
-          q.where({ userId: currentUserId })
-        );
+        query = query.filterFavorite(currentUserId);
       }
     }
 

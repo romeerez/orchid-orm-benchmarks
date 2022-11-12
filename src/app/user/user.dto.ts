@@ -9,3 +9,13 @@ export const authDto = z.object({
   }),
   token: z.string(),
 });
+
+export const userDto = userSchema
+  .pick({
+    username: true,
+  })
+  .and(
+    z.object({
+      following: z.boolean(),
+    })
+  );

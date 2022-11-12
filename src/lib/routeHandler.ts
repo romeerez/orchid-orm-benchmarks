@@ -1,5 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { AnyZodObject, z, ZodObject, ZodRawShape } from 'zod';
+import {
+  AnyZodObject,
+  z,
+  ZodObject,
+  ZodRawShape,
+  ZodType,
+  ZodTypeAny,
+} from 'zod';
 import { config } from '../config';
 import { deepStrict } from './zodUtils';
 
@@ -7,7 +14,7 @@ export const routeHandler = <
   Params extends AnyZodObject,
   Query extends AnyZodObject,
   Body extends AnyZodObject,
-  Result extends AnyZodObject | ZodRawShape,
+  Result extends ZodTypeAny | ZodRawShape,
   Request = Omit<FastifyRequest, 'params' | 'query' | 'body'> & {
     params: AnyZodObject extends Params ? never : z.infer<Params>;
     query: AnyZodObject extends Query ? never : z.infer<Query>;
@@ -34,9 +41,7 @@ export const routeHandler = <
     schema.result &&
     config.validateResponses &&
     deepStrict(
-      schema.result instanceof ZodObject
-        ? schema.result
-        : z.object(schema.result)
+      schema.result instanceof ZodType ? schema.result : z.object(schema.result)
     );
 
   return async (req, res) => {

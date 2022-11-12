@@ -1,5 +1,4 @@
 import { routeHandler } from '../../lib/routeHandler';
-import { z } from 'zod';
 import { db } from '../../db';
 import { encryptPassword } from '../../lib/password';
 import { createToken } from '../../lib/jwt';
@@ -8,6 +7,7 @@ import { ApiError } from '../../lib/errors';
 import { comparePassword } from '../../lib/password';
 import { omit } from '../../lib/utils';
 import { getCurrentUserId } from './user.service';
+import { authDto } from './user.dto';
 
 export const registerUserRoute = routeHandler(
   {
@@ -16,14 +16,7 @@ export const registerUserRoute = routeHandler(
       email: true,
       password: true,
     }),
-    result: {
-      user: userSchema.pick({
-        id: true,
-        username: true,
-        email: true,
-      }),
-      token: z.string(),
-    },
+    result: authDto,
   },
   async (req) => {
     try {
@@ -56,14 +49,7 @@ export const loginUserRoute = routeHandler(
       email: true,
       password: true,
     }),
-    result: {
-      user: userSchema.pick({
-        id: true,
-        username: true,
-        email: true,
-      }),
-      token: z.string(),
-    },
+    result: authDto,
   },
   async (req) => {
     const user = await db.user

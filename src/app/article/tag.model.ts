@@ -1,4 +1,5 @@
 import { Model } from '../../lib/model';
+import { modelToZod } from 'porm-schema-to-zod';
 
 export class TagModel extends Model {
   table = 'tag';
@@ -8,3 +9,5 @@ export class TagModel extends Model {
     ...t.timestamps(),
   }));
 }
+
+export const tagSchema = modelToZod(TagModel);

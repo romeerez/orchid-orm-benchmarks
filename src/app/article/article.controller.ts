@@ -1,9 +1,15 @@
 import { routeHandler } from '../../lib/routeHandler';
-import { getOptionalCurrentUserId } from '../user/user.service';
+import {
+  getCurrentUserId,
+  getOptionalCurrentUserId,
+} from '../user/user.service';
 import { z } from 'zod';
 import { UnauthorizedError } from '../../lib/errors';
 import { articleDto } from './article.dto';
 import { articleRepo } from './article.repo';
+import { articleSchema } from './article.model';
+import { db } from '../../db';
+import { tagSchema } from './tag.model';
 
 export const listArticlesRoute = routeHandler(
   {
@@ -53,5 +59,44 @@ export const listArticlesRoute = routeHandler(
     }
 
     return query;
+  }
+);
+
+export const createArticleRoute = routeHandler(
+  {
+    body: articleSchema
+      .pick({
+        slug: true,
+        title: true,
+        body: true,
+      })
+      .extend({
+        tags: tagSchema.shape.name.array(),
+      }),
+  },
+  (req) => {
+    const currentUserId = getCurrentUserId(req);
+
+    return db.$transaction(async (db) => {
+      const { tags, ...params } = req.body;
+
+      const articleId = await db.article.get('id').create({
+        ...params,
+        favoritesCount: 0,
+        userId: currentUserId,
+        articleTags: {
+          create: tags.map((name) => ({
+            tag: {
+              connectOrCreate: {
+                where: { name },
+                create: { name },
+              },
+            },
+          })),
+        },
+      });
+
+      return articleRepo(db.article).selectDto(currentUserId).find(articleId);
+    });
   }
 );

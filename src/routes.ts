@@ -12,4 +12,5 @@ export const routes = async (app: FastifyInstance) => {
   app.delete('/users/:username/follow', user.unfollowUserRoute);
 
   app.get('/articles', article.listArticlesRoute);
+  app.post('/articles', article.createArticleRoute);
 };

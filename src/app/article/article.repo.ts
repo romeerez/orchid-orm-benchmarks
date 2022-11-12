@@ -12,7 +12,7 @@ export const articleRepo = createRepo(db.article, {
       'createdAt',
       'updatedAt',
       {
-        tags: (q) => q.tags.pluck('name'),
+        tags: (q) => q.tags.order('name').pluck('name'),
         favorited: currentUserId
           ? (q) => q.favorites.where({ userId: currentUserId }).exists()
           : db.article.raw((t) => t.boolean(), 'false'),

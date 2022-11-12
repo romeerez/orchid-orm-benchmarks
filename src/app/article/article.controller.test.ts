@@ -1,5 +1,7 @@
 import { articleFactory, userFactory } from '../../lib/test/testFactories';
 import { testRequest } from '../../lib/test/testRequest';
+import { itShouldRequireAuth } from '../../lib/test/testUtils';
+import { db } from '../../db';
 
 describe('article controller', () => {
   describe('GET /articles', () => {
@@ -125,6 +127,14 @@ describe('article controller', () => {
       });
 
       describe('feed', () => {
+        itShouldRequireAuth(() =>
+          testRequest.get('/articles', {
+            query: {
+              feed: 'true',
+            },
+          })
+        );
+
         it('should return unauthorized error for not authorized request', async () => {
           const res = await testRequest.get('/articles', {
             query: {
@@ -175,17 +185,13 @@ describe('article controller', () => {
       });
 
       describe('favorite', () => {
-        it('should return unauthorized error for not authorized request', async () => {
-          const res = await testRequest.get('/articles', {
+        itShouldRequireAuth(() =>
+          testRequest.get('/articles', {
             query: {
               favorite: 'true',
             },
-          });
-
-          expect(res.json()).toEqual({
-            message: 'Unauthorized',
-          });
-        });
+          })
+        );
 
         it('should returns only articles favorited by current user', async () => {
           const [currentUser, author] = await userFactory.createList(2);
@@ -217,6 +223,69 @@ describe('article controller', () => {
           );
         });
       });
+    });
+  });
+
+  describe('POST /articles', () => {
+    const params = articleFactory
+      .pick({
+        slug: true,
+        title: true,
+        body: true,
+      })
+      .build();
+
+    itShouldRequireAuth(() =>
+      testRequest.post('/articles', {
+        ...params,
+        tags: [],
+      })
+    );
+
+    it('should create article without tags, return articleDto', async () => {
+      const currentUser = await userFactory.create();
+
+      const res = await testRequest.as(currentUser).post('/articles', {
+        ...params,
+        tags: [],
+      });
+
+      const data = res.json();
+      expect(data.tags).toEqual([]);
+      expect(data.author.username).toBe(currentUser.username);
+    });
+
+    it('should create article and tags, should connect existing tags, return articleDto', async () => {
+      const currentUser = await userFactory.create();
+      const tagId = await db.tag.get('id').create({ name: 'one' });
+
+      const res = await testRequest.as(currentUser).post('/articles', {
+        ...params,
+        tags: ['one', 'two'],
+      });
+
+      const data = res.json();
+      expect(data.tags).toEqual(['one', 'two']);
+      expect(data.favorited).toBe(false);
+      expect(data.author.username).toBe(currentUser.username);
+      expect(data.author.following).toBe(false);
+
+      const savedArticle = await db.article
+        .findBy({ slug: data.slug })
+        .select('slug', 'title', 'body', {
+          tags: (q) => q.tags.order('name'),
+        });
+
+      expect(savedArticle).toMatchObject(params);
+      expect(savedArticle.tags).toMatchObject([
+        {
+          id: tagId,
+          name: 'one',
+        },
+        {
+          name: 'two',
+        },
+      ]);
     });
   });
 });

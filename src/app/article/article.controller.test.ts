@@ -307,8 +307,7 @@ describe('article controller', () => {
     );
 
     it('should return unauthorized error when trying to update article of other user', async () => {
-      const currentUser = await userFactory.create();
-      const author = await userFactory.create();
+      const [currentUser, author] = await userFactory.createList(2);
       const article = await articleFactory.create({
         userId: author.id,
       });
@@ -354,8 +353,9 @@ describe('article controller', () => {
         articleTags: {
           create: ['two', 'three'].map((name) => ({
             tag: {
-              create: {
-                name,
+              connectOrCreate: {
+                where: { name },
+                create: { name },
               },
             },
           })),
@@ -455,6 +455,70 @@ describe('article controller', () => {
         });
 
       expect(res.statusCode).toBe(200);
+    });
+  });
+
+  describe('DELETE /articles/:slug', () => {
+    itShouldRequireAuth(() => testRequest.delete('/articles/article-slug'));
+
+    it('should return unauthorized error when trying to delete article of other user', async () => {
+      const [currentUser, author] = await userFactory.createList(2);
+      const article = await articleFactory.create({
+        userId: author.id,
+      });
+
+      const res = await testRequest
+        .as(currentUser)
+        .delete(`/articles/${article.slug}`);
+
+      expectUnauthorized(res);
+    });
+
+    it('should delete article', async () => {
+      const currentUser = await userFactory.create();
+      const article = await articleFactory.create({
+        userId: currentUser.id,
+      });
+
+      await testRequest.as(currentUser).delete(`/articles/${article.slug}`);
+
+      const exists = await db.article.find(article.id).exists();
+      expect(exists).toBe(false);
+    });
+
+    it('should delete unused tags, and leave used tags', async () => {
+      const currentUser = await userFactory.create();
+      const article = await articleFactory.create({
+        userId: currentUser.id,
+        articleTags: {
+          create: ['one', 'two'].map((name) => ({
+            tag: {
+              create: {
+                name,
+              },
+            },
+          })),
+        },
+      });
+
+      await articleFactory.create({
+        userId: currentUser.id,
+        articleTags: {
+          create: ['two', 'three'].map((name) => ({
+            tag: {
+              connectOrCreate: {
+                where: { name },
+                create: { name },
+              },
+            },
+          })),
+        },
+      });
+
+      await testRequest.as(currentUser).delete(`/articles/${article.slug}`);
+
+      const allTagNames = await db.tag.pluck('name');
+      expect(allTagNames).toEqual(['two', 'three']);
     });
   });
 });

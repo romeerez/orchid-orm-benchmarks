@@ -22,9 +22,9 @@ specifiers:
   pg: ^8.8.0
   pg-transactional-tests: ^1.0.5
   pino-pretty: ^9.1.1
-  porm: ^1.2.54
+  porm: ^1.2.56
   porm-schema-to-zod: ^0.2.1
-  porm-test-factory: ^0.0.26
+  porm-test-factory: ^0.0.28
   pqb: ^0.5.4
   prettier: ^2.7.1
   rake-db: ^2.0.29
@@ -38,7 +38,7 @@ dependencies:
   dotenv: 16.0.3
   fastify: 4.9.2
   jsonwebtoken: 8.5.1
-  porm: 1.2.54
+  porm: 1.2.56
   porm-schema-to-zod: 0.2.1
   pqb: 0.5.4
   zod: 3.19.1
@@ -61,7 +61,7 @@ devDependencies:
   pg: 8.8.0
   pg-transactional-tests: 1.0.5_pg@8.8.0
   pino-pretty: 9.1.1
-  porm-test-factory: 0.0.26
+  porm-test-factory: 0.0.28
   prettier: 2.7.1
   rake-db: 2.0.29
   ts-node: 10.9.1_c7vtmw4r5lhzpzjntnohxhujqu
@@ -3643,19 +3643,19 @@ packages:
       pqb: 0.5.4
       zod: 3.19.1
 
-  /porm-test-factory/0.0.26:
-    resolution: {integrity: sha512-UdXypNiTq2suAjju2jH/D7ROIhqQaC0PIGmstr0w7FZmMk8H7Q0UyY6VMDcOEJYp1K6eFi4EUN4zj0vgJsjCNQ==}
+  /porm-test-factory/0.0.28:
+    resolution: {integrity: sha512-xqdYRQn7fv0HBaV78/EHSaZCcXufmFw4CVM6lD9Z+LKvITkURpxEjBp4xSm1BXtsvQpCo9yDxh46T+82A2gdgg==}
     dependencies:
       '@anatine/zod-mock': 3.6.0_@faker-js+faker@7.6.0
       '@faker-js/faker': 7.6.0
-      porm: 1.2.54
+      porm: 1.2.56
       porm-schema-to-zod: 0.2.1
       pqb: 0.5.4
       zod: 3.19.1
     dev: true
 
-  /porm/1.2.54:
-    resolution: {integrity: sha512-SPrdMi/FpT1R7sYhTCu1kb+IquXpDqXYLA//MiCXODfB5CVci0V7i1SyoM8gQ6kf0ErXzuymOxkqm2bm0t+tzA==}
+  /porm/1.2.56:
+    resolution: {integrity: sha512-RCw2KPwn5o9NtXP3XCAwuGmVGHxwkF9Usd8buRzDI7UYQ9Tr2OKEWuJHmnNjamsS0diZy5YbouZpqDsWELcu2Q==}
     dependencies:
       pqb: 0.5.4
 

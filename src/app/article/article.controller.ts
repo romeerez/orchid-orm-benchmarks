@@ -10,6 +10,7 @@ import { articleRepo } from './article.repo';
 import { articleSchema } from './article.model';
 import { db } from '../../db';
 import { tagSchema } from '../tag/tag.model';
+import { tagRepo } from '../tag/tag.repo';
 
 export const listArticlesRoute = routeHandler(
   {
@@ -181,5 +182,41 @@ export const toggleArticleFavoriteRoute = routeHandler(
         })
         .delete();
     }
+  }
+);
+
+export const deleteArticleRoute = routeHandler(
+  {
+    params: z.object({
+      slug: articleSchema.shape.slug,
+    }),
+  },
+  async (req) => {
+    const currentUserId = getCurrentUserId(req);
+    const { slug } = req.params;
+
+    await db.$transaction(async (db) => {
+      const article = await db.article
+        .select('id', 'userId', {
+          tagIds: (q) => q.tags.pluck('id'),
+        })
+        .findBy({ slug });
+
+      if (article.userId !== currentUserId) {
+        throw new UnauthorizedError();
+      }
+
+      const articleQuery = db.article.find(article.id);
+
+      if (article.tagIds.length) {
+        await articleQuery.articleTags.delete(true);
+      }
+
+      await articleQuery.delete();
+
+      if (article.tagIds.length) {
+        await tagRepo(db.tag).whereIn('id', article.tagIds).deleteUnused();
+      }
+    });
   }
 );

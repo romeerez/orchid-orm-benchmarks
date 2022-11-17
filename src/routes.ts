@@ -15,4 +15,5 @@ export const routes = async (app: FastifyInstance) => {
   app.post('/articles', article.createArticleRoute);
   app.patch('/articles/:slug', article.updateArticleRoute);
   app.post('/articles/:slug/favorite', article.toggleArticleFavoriteRoute);
+  app.delete('/articles/:slug', article.deleteArticleRoute);
 };

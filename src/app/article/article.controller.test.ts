@@ -1,7 +1,11 @@
 import { articleFactory, userFactory } from '../../lib/test/testFactories';
 import { testRequest } from '../../lib/test/testRequest';
-import { itShouldRequireAuth } from '../../lib/test/testUtils';
+import {
+  expectUnauthorized,
+  itShouldRequireAuth,
+} from '../../lib/test/testUtils';
 import { db } from '../../db';
+import { articleRepo } from './article.repo';
 
 describe('article controller', () => {
   describe('GET /articles', () => {
@@ -286,6 +290,171 @@ describe('article controller', () => {
           name: 'two',
         },
       ]);
+    });
+  });
+
+  describe('PATCH /articles/:slug', () => {
+    const params = articleFactory
+      .pick({
+        slug: true,
+        title: true,
+        body: true,
+      })
+      .build();
+
+    itShouldRequireAuth(() =>
+      testRequest.patch('/articles/article-slug', params)
+    );
+
+    it('should return unauthorized error when trying to update article of other user', async () => {
+      const currentUser = await userFactory.create();
+      const author = await userFactory.create();
+      const article = await articleFactory.create({
+        userId: author.id,
+      });
+
+      const res = await testRequest
+        .as(currentUser)
+        .patch(`/articles/${article.slug}`, params);
+
+      expectUnauthorized(res);
+    });
+
+    it('should update article fields', async () => {
+      const currentUser = await userFactory.create();
+      const article = await articleFactory.create({
+        userId: currentUser.id,
+      });
+
+      const res = await testRequest
+        .as(currentUser)
+        .patch(`/articles/${article.slug}`, params);
+
+      const data = res.json();
+      expect(data).toMatchObject(params);
+    });
+
+    it('should set new tags to article, create new tags, delete not used tags', async () => {
+      const [currentUser, otherAuthor] = await userFactory.createList(2);
+      const article = await articleFactory.create({
+        userId: currentUser.id,
+        articleTags: {
+          create: ['one', 'two'].map((name) => ({
+            tag: {
+              create: {
+                name,
+              },
+            },
+          })),
+        },
+      });
+
+      await articleFactory.create({
+        userId: otherAuthor.id,
+        articleTags: {
+          create: ['two', 'three'].map((name) => ({
+            tag: {
+              create: {
+                name,
+              },
+            },
+          })),
+        },
+      });
+
+      const res = await testRequest
+        .as(currentUser)
+        .patch(`/articles/${article.slug}`, {
+          tags: ['two', 'new tag'],
+        });
+
+      const data = res.json();
+      expect(data.tags).toEqual(['new tag', 'two']);
+
+      const allTagNames = await db.tag.pluck('name');
+      expect(allTagNames).not.toContain('one');
+    });
+  });
+
+  describe('POST /articles/:slug/favorite', () => {
+    it('should mark article as favorited when passing true', async () => {
+      const [currentUser, author] = await userFactory.createList(2);
+      const article = await articleFactory.create({
+        userId: author.id,
+      });
+
+      await testRequest
+        .as(currentUser)
+        .post(`/articles/${article.slug}/favorite`, {
+          favorite: true,
+        });
+
+      const { favorited } = await articleRepo
+        .find(article.id)
+        .selectFavorited(currentUser.id);
+      expect(favorited).toBe(true);
+    });
+
+    it('should not fail when passing true and article is already favorited', async () => {
+      const [currentUser, author] = await userFactory.createList(2);
+      const article = await articleFactory.create({
+        userId: author.id,
+        favorites: {
+          create: [
+            {
+              userId: currentUser.id,
+            },
+          ],
+        },
+      });
+
+      const res = await testRequest
+        .as(currentUser)
+        .post(`/articles/${article.slug}/favorite`, {
+          favorite: true,
+        });
+
+      expect(res.statusCode).toBe(200);
+    });
+
+    it('should unmark article as favorited when passing false', async () => {
+      const [currentUser, author] = await userFactory.createList(2);
+      const article = await articleFactory.create({
+        userId: author.id,
+        favorites: {
+          create: [
+            {
+              userId: currentUser.id,
+            },
+          ],
+        },
+      });
+
+      await testRequest
+        .as(currentUser)
+        .post(`/articles/${article.slug}/favorite`, {
+          favorite: false,
+        });
+
+      const { favorited } = await articleRepo
+        .find(article.id)
+        .selectFavorited(currentUser.id);
+      expect(favorited).toBe(false);
+    });
+
+    it('should not fail when article is not favorited and passing false', async () => {
+      const [currentUser, author] = await userFactory.createList(2);
+      const article = await articleFactory.create({
+        userId: author.id,
+      });
+
+      const res = await testRequest
+        .as(currentUser)
+        .post(`/articles/${article.slug}/favorite`, {
+          favorite: false,
+        });
+
+      expect(res.statusCode).toBe(200);
     });
   });
 });

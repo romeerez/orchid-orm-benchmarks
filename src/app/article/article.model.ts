@@ -1,7 +1,7 @@
 import { Model } from '../../lib/model';
 import { UserModel } from '../user/user.model';
 import { ArticleTagModel } from './articleTag.model';
-import { TagModel } from './tag.model';
+import { TagModel } from '../tag/tag.model';
 import { ArticleFavoriteModel } from './articleFavorite.model';
 import { modelToZod } from 'porm-schema-to-zod';
 

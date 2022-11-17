@@ -6,6 +6,7 @@ export const articleDto = articleSchema
   .pick({
     slug: true,
     title: true,
+    body: true,
     favoritesCount: true,
     createdAt: true,
     updatedAt: true,

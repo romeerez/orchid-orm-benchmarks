@@ -1,5 +1,5 @@
 import { Model } from '../../lib/model';
-import { TagModel } from './tag.model';
+import { TagModel } from '../tag/tag.model';
 
 export class ArticleTagModel extends Model {
   table = 'articleTag';

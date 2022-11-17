@@ -9,7 +9,7 @@ import { articleDto } from './article.dto';
 import { articleRepo } from './article.repo';
 import { articleSchema } from './article.model';
 import { db } from '../../db';
-import { tagSchema } from './tag.model';
+import { tagSchema } from '../tag/tag.model';
 
 export const listArticlesRoute = routeHandler(
   {
@@ -73,6 +73,7 @@ export const createArticleRoute = routeHandler(
       .extend({
         tags: tagSchema.shape.name.array(),
       }),
+    result: articleDto,
   },
   (req) => {
     const currentUserId = getCurrentUserId(req);
@@ -98,5 +99,87 @@ export const createArticleRoute = routeHandler(
 
       return articleRepo(db.article).selectDto(currentUserId).find(articleId);
     });
+  }
+);
+
+export const updateArticleRoute = routeHandler(
+  {
+    body: articleSchema
+      .pick({
+        slug: true,
+        title: true,
+        body: true,
+      })
+      .extend({
+        tags: tagSchema.shape.name.array(),
+        favorite: z.boolean(),
+      })
+      .partial(),
+    params: z.object({
+      slug: articleSchema.shape.slug,
+    }),
+    result: articleDto,
+  },
+  (req) => {
+    const currentUserId = getCurrentUserId(req);
+
+    return db.$transaction(async (db) => {
+      const { slug } = req.params;
+      const repo = articleRepo(db.article);
+
+      const article = await repo.findBy({ slug }).select('id', 'userId', {
+        tags: (q) => q.tags.select('id', 'name'),
+      });
+
+      if (article.userId !== currentUserId) {
+        throw new UnauthorizedError();
+      }
+
+      const { tags, favorite, ...params } = req.body;
+
+      await repo
+        .find(article.id)
+        .update(params)
+        .updateTags(db.tag, article.tags, tags);
+
+      return await repo.selectDto(currentUserId).find(article.id);
+    });
+  }
+);
+
+export const toggleArticleFavoriteRoute = routeHandler(
+  {
+    body: z.object({
+      favorite: z.boolean(),
+    }),
+    params: z.object({
+      slug: articleSchema.shape.slug,
+    }),
+  },
+  async (req) => {
+    const currentUserId = getCurrentUserId(req);
+    const { slug } = req.params;
+    const { favorite } = req.body;
+
+    const favoritesQuery = db.article.findBy({ slug }).favorites;
+    if (favorite) {
+      try {
+        await favoritesQuery.create({
+          userId: currentUserId,
+        });
+      } catch (err) {
+        // ignore case when article is already favorited
+        if (err instanceof db.articleFavorite.error && err.isUnique) {
+          return;
+        }
+        throw err;
+      }
+    } else {
+      await favoritesQuery
+        .where({
+          userId: currentUserId,
+        })
+        .delete();
+    }
   }
 );

@@ -13,4 +13,6 @@ export const routes = async (app: FastifyInstance) => {
 
   app.get('/articles', article.listArticlesRoute);
   app.post('/articles', article.createArticleRoute);
+  app.patch('/articles/:slug', article.updateArticleRoute);
+  app.post('/articles/:slug/favorite', article.toggleArticleFavoriteRoute);
 };

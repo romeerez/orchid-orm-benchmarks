@@ -16,9 +16,9 @@ export const routeHandler = <
   Body extends AnyZodObject,
   Result extends ZodTypeAny | ZodRawShape,
   Request = Omit<FastifyRequest, 'params' | 'query' | 'body'> & {
-    params: AnyZodObject extends Params ? never : z.infer<Params>;
-    query: AnyZodObject extends Query ? never : z.infer<Query>;
-    body: AnyZodObject extends Body ? never : z.infer<Body>;
+    params: z.infer<Params>;
+    query: z.infer<Query>;
+    body: z.infer<Body>;
   },
   Response = Result extends AnyZodObject
     ? z.infer<Result>

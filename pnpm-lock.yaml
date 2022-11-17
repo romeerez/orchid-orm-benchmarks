@@ -22,12 +22,12 @@ specifiers:
   pg: ^8.8.0
   pg-transactional-tests: ^1.0.5
   pino-pretty: ^9.1.1
-  porm: ^1.2.50
-  porm-schema-to-zod: ^0.1.9
-  porm-test-factory: ^0.0.20
-  pqb: ^0.5.2
+  porm: ^1.2.54
+  porm-schema-to-zod: ^0.2.1
+  porm-test-factory: ^0.0.26
+  pqb: ^0.5.4
   prettier: ^2.7.1
-  rake-db: ^2.0.27
+  rake-db: ^2.0.29
   ts-node: ^10.9.1
   ts-node-dev: ^2.0.0
   typescript: ^4.8.4
@@ -38,9 +38,9 @@ dependencies:
   dotenv: 16.0.3
   fastify: 4.9.2
   jsonwebtoken: 8.5.1
-  porm: 1.2.50
-  porm-schema-to-zod: 0.1.9
-  pqb: 0.5.2
+  porm: 1.2.54
+  porm-schema-to-zod: 0.2.1
+  pqb: 0.5.4
   zod: 3.19.1
 
 devDependencies:
@@ -61,9 +61,9 @@ devDependencies:
   pg: 8.8.0
   pg-transactional-tests: 1.0.5_pg@8.8.0
   pino-pretty: 9.1.1
-  porm-test-factory: 0.0.20
+  porm-test-factory: 0.0.26
   prettier: 2.7.1
-  rake-db: 2.0.27
+  rake-db: 2.0.29
   ts-node: 10.9.1_c7vtmw4r5lhzpzjntnohxhujqu
   ts-node-dev: 2.0.0_c7vtmw4r5lhzpzjntnohxhujqu
   typescript: 4.8.4
@@ -3637,27 +3637,27 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /porm-schema-to-zod/0.1.9:
-    resolution: {integrity: sha512-PBmXb17GJeY+Gry1ocSvXNKB/GYzhpTjdHkvzQgxF3uW7I+jDYDQkDPd5IcLfoKzegg4j/EJ1qVlXV2Jwc14Ng==}
+  /porm-schema-to-zod/0.2.1:
+    resolution: {integrity: sha512-m+610wii+2shkbRB8kFayNfKeXp4wM8A3M2pZgKg8WyLm9bc3iKpfekFrMHw2rk1ZkgmJwZZIhoIdPujm1MCaw==}
     dependencies:
-      pqb: 0.5.2
+      pqb: 0.5.4
       zod: 3.19.1
 
-  /porm-test-factory/0.0.20:
-    resolution: {integrity: sha512-XSENrj/VbArYegbvNDNPNbVt5mUIx5nmRfycvIFqhtkpDVhKJKEcWAvQu3qxCQFZhLLFyYNUfrHG0O/XebvQvQ==}
+  /porm-test-factory/0.0.26:
+    resolution: {integrity: sha512-UdXypNiTq2suAjju2jH/D7ROIhqQaC0PIGmstr0w7FZmMk8H7Q0UyY6VMDcOEJYp1K6eFi4EUN4zj0vgJsjCNQ==}
     dependencies:
       '@anatine/zod-mock': 3.6.0_@faker-js+faker@7.6.0
       '@faker-js/faker': 7.6.0
-      porm: 1.2.50
-      porm-schema-to-zod: 0.1.9
-      pqb: 0.5.2
+      porm: 1.2.54
+      porm-schema-to-zod: 0.2.1
+      pqb: 0.5.4
       zod: 3.19.1
     dev: true
 
-  /porm/1.2.50:
-    resolution: {integrity: sha512-A8zaGRdt4jjDcwhcTLcMoPSf992BHxKOhWjeXHCKvm57Vv01iTMWGoqUs14vXThTEkLQHCwQvdZInAnZmgnVUg==}
+  /porm/1.2.54:
+    resolution: {integrity: sha512-SPrdMi/FpT1R7sYhTCu1kb+IquXpDqXYLA//MiCXODfB5CVci0V7i1SyoM8gQ6kf0ErXzuymOxkqm2bm0t+tzA==}
     dependencies:
-      pqb: 0.5.2
+      pqb: 0.5.4
 
   /postgres-array/2.0.0:
     resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
@@ -3681,8 +3681,8 @@ packages:
       xtend: 4.0.2
     dev: true
 
-  /pqb/0.5.2:
-    resolution: {integrity: sha512-XvpmBtN1/Xa2ic0FesxWYtclO+66tO2bN4XJD5j6MFdO6aPIwO8ABwGMdDO3+1s1BnxyGBLBBCj415Gkz4S/0g==}
+  /pqb/0.5.4:
+    resolution: {integrity: sha512-GM2RBSVlL/u2xNYqWozbUCB4nQyOzJFWSiy+ni390ace9rrTJMshQlrMyhTn6VfT5Bd7WlvIFGl0bowVcPeQzA==}
 
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -3754,12 +3754,12 @@ packages:
     resolution: {integrity: sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==}
     dev: false
 
-  /rake-db/2.0.27:
-    resolution: {integrity: sha512-5R/nMDXDUpHRw3PM7AQWMg67pXMtgfXds2rZxnPsZpGXfTBj/OzpT5ZZpX2VTSukBAup1R9FsyTWUPdIDleXZQ==}
+  /rake-db/2.0.29:
+    resolution: {integrity: sha512-SNRK9jr/DkHoKgFYQPWhqRskgMcPk5OrLApCQ2Yt/safEJ10uiPZ7Qto7l8F0ufnf3oNx5pO6zyVWUoNis0Tww==}
     dependencies:
       enquirer: 2.3.6
       pluralize: 8.0.0
-      pqb: 0.5.2
+      pqb: 0.5.4
     dev: true
 
   /randexp/0.5.3:

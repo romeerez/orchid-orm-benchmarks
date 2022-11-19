@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique(map: "userEmailIndex")
+  firstName String
+  lastName  String
+  bio       String
+  age       Int
+  city      String
+  country   String
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @default(now()) @db.Timestamp(6)
+  comment   comment[]
+  post      post[]
+}
+
+model comment {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  postId    Int
+  text      String
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @default(now()) @db.Timestamp(6)
+  post      post     @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user      user     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model post {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  title       String
+  description String
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime  @default(now()) @db.Timestamp(6)
+  user        user      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  comment     comment[]
+  postTag     postTag[]
+}
+
+model postTag {
+  postId  Int
+  tagName String
+  post    post   @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tag     tag    @relation(fields: [tagName], references: [name], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([postId, tagName])
+}
+
+model tag {
+  name    String    @id
+  postTag postTag[]
+}

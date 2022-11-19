@@ -6,9 +6,7 @@
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "jest",
-    "db": "ts-node src/scripts/db.ts",
-    "prepare": "husky install",
-    "format": "eslint --fix \"./src/**/*.ts\""
+    "db": "ts-node src/scripts/db.ts"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -17,11 +15,6 @@
     "transform": {
       "^.+\\.ts$": "@swc/jest"
     }
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "pnpm run format"
-    ]
   },
   "keywords": [],
   "author": "",
@@ -45,18 +38,10 @@
     "@types/jest": "^29.2.2",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.11.9",
-    "@typescript-eslint/eslint-plugin": "^5.42.0",
-    "@typescript-eslint/parser": "^5.42.0",
-    "eslint": "8.22.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.1",
     "jest": "^29.2.2",
-    "lint-staged": "^13.0.3",
     "pg": "^8.8.0",
     "pg-transactional-tests": "^1.0.5",
     "pino-pretty": "^9.1.1",
-    "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.4"

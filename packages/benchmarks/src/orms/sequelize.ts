@@ -6,7 +6,7 @@ import {
   PostTagRecord,
   TagRecord,
   UserRecord,
-} from './porm';
+} from './orchidOrm';
 
 const db = new Sequelize(config.databaseUrl, {
   logging: false,

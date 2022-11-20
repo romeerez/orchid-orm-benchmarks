@@ -5,7 +5,7 @@ import {
   PostRecord,
   PostTagRecord,
   UserRecord,
-} from '../orms/porm';
+} from '../orms/orchidOrm';
 import { prisma } from '../orms/prisma';
 import {
   sequelize,
@@ -13,10 +13,8 @@ import {
   SequelizePostTag,
   SequelizeUser,
 } from '../orms/sequelize';
-import { kysely } from '../orms/kysely';
 
-// const runTimes = 500;
-const runTimes = 1;
+const runTimes = 500;
 const recordsCount = 30;
 const tagsPerPost = 5;
 const commentsPerPost = 3;
@@ -77,7 +75,7 @@ export const run = async (orm?: string) => {
   return runBenchmark(
     { orm, runTimes },
     {
-      porm: {
+      orchidOrm: {
         async run() {
           await db.post
             .select('id', 'title', 'description', {

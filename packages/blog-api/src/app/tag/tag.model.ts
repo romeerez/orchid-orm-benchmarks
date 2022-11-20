@@ -1,5 +1,5 @@
 import { Model } from '../../lib/model';
-import { modelToZod } from 'porm-schema-to-zod';
+import { modelToZod } from 'orchid-orm-schema-to-zod';
 import { ArticleTagModel } from '../article/articleTag.model';
 
 export class TagModel extends Model {

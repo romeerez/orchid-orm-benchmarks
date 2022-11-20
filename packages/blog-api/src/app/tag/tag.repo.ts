@@ -1,4 +1,4 @@
-import { createRepo } from 'porm';
+import { createRepo } from 'orchid-orm';
 import { db } from '../../db';
 
 export const tagRepo = createRepo(db.tag, {

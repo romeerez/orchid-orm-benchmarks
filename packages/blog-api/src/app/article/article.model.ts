@@ -3,7 +3,7 @@ import { UserModel } from '../user/user.model';
 import { ArticleTagModel } from './articleTag.model';
 import { TagModel } from '../tag/tag.model';
 import { ArticleFavoriteModel } from './articleFavorite.model';
-import { modelToZod } from 'porm-schema-to-zod';
+import { modelToZod } from 'orchid-orm-schema-to-zod';
 
 export class ArticleModel extends Model {
   table = 'article';

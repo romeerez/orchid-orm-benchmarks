@@ -1,4 +1,4 @@
-import { createModel, porm } from 'porm';
+import { createModel, orchidORM } from 'orchid-orm';
 import { config } from '../config';
 import { columnTypes } from 'pqb';
 
@@ -103,7 +103,7 @@ class CommentModel extends Model {
   };
 }
 
-export const db = porm(
+export const db = orchidORM(
   {
     connectionString: config.databaseUrl,
   },

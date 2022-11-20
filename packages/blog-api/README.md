@@ -1,6 +1,6 @@
 # Blog API
 
-This is a demo API built for `Porm` [tutorial](https://porm.netlify.app/guide/building-a-sample-app.html).
+This is a demo API built for `Orchid ORM` [tutorial](https://orchid-orm.netlify.app/guide/building-a-sample-app.html).
 
 Setup and run:
 

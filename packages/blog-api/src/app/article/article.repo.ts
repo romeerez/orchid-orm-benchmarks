@@ -1,4 +1,4 @@
-import { createRepo } from 'porm';
+import { createRepo } from 'orchid-orm';
 import { db } from '../../db';
 import { userRepo } from '../user/user.repo';
 import { tagRepo } from '../tag/tag.repo';

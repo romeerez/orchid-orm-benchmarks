@@ -1,5 +1,5 @@
 import { getUserInsertData, runBenchmark } from '../utils/utils';
-import { db } from '../orms/porm';
+import { db } from '../orms/orchidOrm';
 import { prisma } from '../orms/prisma';
 import { sequelize } from '../orms/sequelize';
 import { kysely } from '../orms/kysely';
@@ -22,7 +22,7 @@ export const run = async (orm?: string) => {
   return runBenchmark(
     { orm, runTimes },
     {
-      porm: {
+      orchidOrm: {
         async run() {
           await db.user;
         },

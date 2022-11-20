@@ -1,3 +1,3 @@
-# porm-examples
+# Orchid ORM examples
 
-Example apps build with [Porm](https://github.com/romeerez/porm)
+Example apps build with [Orchid ORM](https://github.com/romeerez/orchid-orm)

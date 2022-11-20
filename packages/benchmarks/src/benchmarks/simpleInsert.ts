@@ -1,4 +1,4 @@
-import { db } from '../orms/porm';
+import { db } from '../orms/orchidOrm';
 import { getUserInsertData, runBenchmark } from '../utils/utils';
 import { prisma } from '../orms/prisma';
 import { sequelize } from '../orms/sequelize';
@@ -20,7 +20,7 @@ export const run = async (orm?: string) => {
       },
     },
     {
-      porm: {
+      orchidOrm: {
         async run() {
           await db.user.count().create(getUserInsertData(i++));
         },

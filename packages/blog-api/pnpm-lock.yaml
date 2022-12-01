@@ -12,14 +12,14 @@ specifiers:
   fastify: ^4.9.2
   jest: ^29.2.2
   jsonwebtoken: ^8.5.1
-  orchid-orm: 1.2.60
-  orchid-orm-schema-to-zod: 0.0.2
-  orchid-orm-test-factory: 0.0.2
+  orchid-orm: 1.3.6
+  orchid-orm-schema-to-zod: 0.1.3
+  orchid-orm-test-factory: 0.1.6
   pg: ^8.8.0
-  pg-transactional-tests: ^1.0.5
+  pg-transactional-tests: 1.0.7
   pino-pretty: ^9.1.1
-  pqb: 0.5.6
-  rake-db: 2.0.31
+  pqb: 0.7.3
+  rake-db: ^2.1.6
   ts-node: ^10.9.1
   ts-node-dev: ^2.0.0
   typescript: ^4.8.4
@@ -30,9 +30,9 @@ dependencies:
   dotenv: 16.0.3
   fastify: 4.9.2
   jsonwebtoken: 8.5.1
-  orchid-orm: 1.2.60
-  orchid-orm-schema-to-zod: 0.0.2
-  pqb: 0.5.6
+  orchid-orm: 1.3.6
+  orchid-orm-schema-to-zod: 0.1.3
+  pqb: 0.7.3
   zod: 3.19.1
 
 devDependencies:
@@ -43,11 +43,11 @@ devDependencies:
   '@types/jsonwebtoken': 8.5.9
   '@types/node': 18.11.9
   jest: 29.2.2_odkjkoia5xunhxkdrka32ib6vi
-  orchid-orm-test-factory: 0.0.2
+  orchid-orm-test-factory: 0.1.6
   pg: 8.8.0
-  pg-transactional-tests: 1.0.5_pg@8.8.0
+  pg-transactional-tests: 1.0.7_pg@8.8.0
   pino-pretty: 9.1.1
-  rake-db: 2.0.31
+  rake-db: 2.1.6
   ts-node: 10.9.1_c7vtmw4r5lhzpzjntnohxhujqu
   ts-node-dev: 2.0.0_c7vtmw4r5lhzpzjntnohxhujqu
   typescript: 4.8.4
@@ -2667,27 +2667,27 @@ packages:
       mimic-fn: 2.1.0
     dev: true
 
-  /orchid-orm-schema-to-zod/0.0.2:
-    resolution: {integrity: sha512-YMgB73Gz2T6fCMFW+vxKLhSGj/pBnDDsTBuzMax5WGIhpgx6gYgi5ELOAe7d2adAEl8SJwwehufrEDDLtpWuFw==}
+  /orchid-orm-schema-to-zod/0.1.3:
+    resolution: {integrity: sha512-H1NELgfoZodIr2eT5efEnobJ6jwY2H2FVjJqpxk0AP7MORZ8eBb4J+HAXlfKH2DkjdPhePTJdlZsbta0V5ykaA==}
     dependencies:
-      pqb: 0.5.6
+      pqb: 0.7.3
       zod: 3.19.1
 
-  /orchid-orm-test-factory/0.0.2:
-    resolution: {integrity: sha512-G+BvSfV5alNyv+JG8jJkGxEuOIi/Fn0HU8JiA5d2+NAPw+b3+WjtcJGs24S5xntiwHy0Bpn1oX+hpqLur1AQVA==}
+  /orchid-orm-test-factory/0.1.6:
+    resolution: {integrity: sha512-deFRk99hi3Es6zZHUNkQHFmb0bZcaPMAZZhyK6lPQjOGD+LwvtkKHe+ToSkU5RSoO+PhVHZDli5GOks4zc+HIQ==}
     dependencies:
       '@anatine/zod-mock': 3.6.0_@faker-js+faker@7.6.0
       '@faker-js/faker': 7.6.0
-      orchid-orm: 1.2.60
-      orchid-orm-schema-to-zod: 0.0.2
-      pqb: 0.5.6
+      orchid-orm: 1.3.6
+      orchid-orm-schema-to-zod: 0.1.3
+      pqb: 0.7.3
       zod: 3.19.1
     dev: true
 
-  /orchid-orm/1.2.60:
-    resolution: {integrity: sha512-dNQpm8Zhy20ddD//X3vKAZYu9Isrn/0Lq3206BAWYyv4t+speyKCF6KT0e8pyJ7x8I/MTnbjzMG2vb47ARDGRA==}
+  /orchid-orm/1.3.6:
+    resolution: {integrity: sha512-9AkKT3cxOdSQgfLaHX8hQsFn/UV9p7iZ5FQj6DiNlQtpKps7neDS//W7/uw82Aj90rRDcd9BRDaxBc/wvJQVpw==}
     dependencies:
-      pqb: 0.5.6
+      pqb: 0.7.3
 
   /p-limit/2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
@@ -2768,8 +2768,8 @@ packages:
     resolution: {integrity: sha512-muRttij7H8TqRNu/DxrAJQITO4Ac7RmX3Klyr/9mJEOBeIpgnF8f9jAfRz5d3XwQZl5qBjF9gLsUtMPJE0vezQ==}
     dev: true
 
-  /pg-transactional-tests/1.0.5_pg@8.8.0:
-    resolution: {integrity: sha512-Y63A1Ns8k7NlQxRixu6p3V08YiKSrpICgaMqvcL7nzRxOEXLoiS7r65hm9qoaqCrs9w+x35KAHSAvJ8+2J2NTw==}
+  /pg-transactional-tests/1.0.7_pg@8.8.0:
+    resolution: {integrity: sha512-gM9QzzM/Dhb7wtwm6JHt3cm+Ibs18Yc30evukYWodQcnT4JXTMY0P5hyZ4+cMAX/P4S9sTiqDGkeQW0FxyBzBQ==}
     peerDependencies:
       pg: '*'
     dependencies:
@@ -2906,8 +2906,8 @@ packages:
       xtend: 4.0.2
     dev: true
 
-  /pqb/0.5.6:
-    resolution: {integrity: sha512-WQx595oxAzzMP2vmTlMSj9T7NwMfRaA+npSCHPdef3NDFLBKVzXa2evOfDseMGtbdZZjvA0NKoGaaOGtEt3k4w==}
+  /pqb/0.7.3:
+    resolution: {integrity: sha512-Aka4YjnqDSdWVvQwWZHIauVOEd+c9vdZm4WZs/S1pxc5vmeU1WjLJ0sRpa21jpJAODzVE7aQazcaDW92BbQ57w==}
 
   /pretty-format/29.2.1:
     resolution: {integrity: sha512-Y41Sa4aLCtKAXvwuIpTvcFBkyeYp2gdFWzXGA+ZNES3VwURIB165XO/z7CjETwzCCS53MjW/rLMyyqEnTtaOfA==}
@@ -2958,12 +2958,12 @@ packages:
     resolution: {integrity: sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==}
     dev: false
 
-  /rake-db/2.0.31:
-    resolution: {integrity: sha512-1luOlRF1nQ10rwmzLYoaK4gqkN7eczhIC2W1Ag2ZtwkUipNrxyBmOae3jMAA0Ux28BCqLvmNbP1mZ7fRNMchPw==}
+  /rake-db/2.1.6:
+    resolution: {integrity: sha512-hZb2XmSuFnO8n3L0dPycUlEbe9Fq+5U0qFvGPttPVc6Rq/F8YrctGTB659MrX9QerA0MA6kXPt0MQ1NneMJYAg==}
     dependencies:
       enquirer: 2.3.6
       pluralize: 8.0.0
-      pqb: 0.5.6
+      pqb: 0.7.3
     dev: true
 
   /randexp/0.5.3:

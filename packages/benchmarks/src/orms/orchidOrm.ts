@@ -5,6 +5,7 @@ import { columnTypes } from 'pqb';
 const Model = createModel({
   columnTypes: {
     ...columnTypes,
+    text: () => columnTypes.text(0, Infinity),
     timestamp: () => columnTypes.timestamp().asDate(),
   },
 });

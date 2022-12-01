@@ -6,9 +6,9 @@ export class UserModel extends Model {
   table = 'user';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
-    username: t.text().unique().min(3).max(30),
-    email: t.text().unique().email().max(100),
-    password: t.text().min(8).max(100),
+    username: t.text().unique().max(30),
+    email: t.text().unique().email(),
+    password: t.text().min(8),
     ...t.timestamps(),
   }));
 

@@ -106,7 +106,7 @@ class CommentModel extends Model {
 
 export const db = orchidORM(
   {
-    connectionString: config.databaseUrl,
+    databaseURL: config.databaseUrl,
   },
   {
     user: UserModel,

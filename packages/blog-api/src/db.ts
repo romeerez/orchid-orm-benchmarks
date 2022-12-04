@@ -9,7 +9,7 @@ import { ArticleFavoriteModel } from './app/article/articleFavorite.model';
 
 export const db = orchidORM(
   {
-    connectionString: config.currentDatabaseUrl,
+    databaseURL: config.currentDatabaseUrl,
     log: true,
   },
   {

@@ -1,6 +1,7 @@
 import path from 'path';
 import { rakeDb } from 'rake-db';
 import { config } from '../config';
+import { appCodeUpdater } from 'orchid-orm';
 
 const migrationsPath = path.resolve(__dirname, '..', 'migrations');
 
@@ -13,4 +14,12 @@ if (config.NODE_ENV !== 'production') {
   options.push({ databaseURL: url });
 }
 
-rakeDb(options, { migrationsPath });
+rakeDb(options, {
+  migrationsPath,
+  appCodeUpdater: appCodeUpdater({
+    tablePath: (tableName) => `src/app/tables/${tableName}.ts`,
+    baseTablePath: 'src/lib/baseTable.ts',
+    baseTableName: 'BaseTable',
+    mainFilePath: 'src/db.ts',
+  }),
+});

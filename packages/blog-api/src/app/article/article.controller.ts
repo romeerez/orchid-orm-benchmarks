@@ -7,9 +7,9 @@ import { z } from 'zod';
 import { UnauthorizedError } from '../../lib/errors';
 import { articleDto } from './article.dto';
 import { articleRepo } from './article.repo';
-import { articleSchema } from './article.model';
+import { articleSchema } from './article.table';
 import { db } from '../../db';
-import { tagSchema } from '../tag/tag.model';
+import { tagSchema } from '../tag/tag.table';
 import { tagRepo } from '../tag/tag.repo';
 
 export const listArticlesRoute = routeHandler(

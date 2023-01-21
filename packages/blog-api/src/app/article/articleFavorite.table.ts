@@ -1,6 +1,6 @@
-import { Model } from '../../lib/model';
+import { BaseTable } from '../../lib/baseTable';
 
-export class ArticleFavoriteModel extends Model {
+export class ArticleFavoriteTable extends BaseTable {
   table = 'articleFavorite';
   columns = this.setColumns((t) => ({
     userId: t.integer().foreignKey('user', 'id'),

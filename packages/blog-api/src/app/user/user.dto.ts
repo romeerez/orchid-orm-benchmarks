@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { userSchema } from './user.model';
+import { userSchema } from './user.table';
 
 export const authDto = z.object({
   user: userSchema.pick({

@@ -1,7 +1,7 @@
-import { Model } from '../../lib/model';
-import { TagModel } from '../tag/tag.model';
+import { BaseTable } from '../../lib/baseTable';
+import { TagTable } from '../tag/tag.table';
 
-export class ArticleTagModel extends Model {
+export class ArticleTagTable extends BaseTable {
   table = 'articleTag';
   columns = this.setColumns((t) => ({
     articleId: t.integer().foreignKey('article', 'id'),
@@ -10,7 +10,7 @@ export class ArticleTagModel extends Model {
   }));
 
   relations = {
-    tag: this.belongsTo(() => TagModel, {
+    tag: this.belongsTo(() => TagTable, {
       primaryKey: 'id',
       foreignKey: 'tagId',
     }),

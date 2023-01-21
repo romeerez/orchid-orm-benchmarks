@@ -1,8 +1,8 @@
-import { Model } from '../../lib/model';
-import { modelToZod } from 'orchid-orm-schema-to-zod';
-import { UserFollowModel } from './userFollow.model';
+import { BaseTable } from '../../lib/baseTable';
+import { tableToZod } from 'orchid-orm-schema-to-zod';
+import { UserFollowTable } from './userFollow.table';
 
-export class UserModel extends Model {
+export class UserTable extends BaseTable {
   table = 'user';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
@@ -13,16 +13,16 @@ export class UserModel extends Model {
   }));
 
   relations = {
-    follows: this.hasMany(() => UserFollowModel, {
+    follows: this.hasMany(() => UserFollowTable, {
       primaryKey: 'id',
       foreignKey: 'followingId',
     }),
 
-    followings: this.hasMany(() => UserFollowModel, {
+    followings: this.hasMany(() => UserFollowTable, {
       primaryKey: 'id',
       foreignKey: 'followerId',
     }),
   };
 }
 
-export const userSchema = modelToZod(UserModel);
+export const userSchema = tableToZod(UserTable);

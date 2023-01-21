@@ -1,11 +1,11 @@
 import { orchidORM } from 'orchid-orm';
 import { config } from './config';
-import { UserModel } from './app/user/user.model';
-import { UserFollowModel } from './app/user/userFollow.model';
-import { ArticleModel } from './app/article/article.model';
-import { ArticleTagModel } from './app/article/articleTag.model';
-import { TagModel } from './app/tag/tag.model';
-import { ArticleFavoriteModel } from './app/article/articleFavorite.model';
+import { UserTable } from './app/user/user.table';
+import { UserFollowTable } from './app/user/userFollow.table';
+import { ArticleTable } from './app/article/article.table';
+import { ArticleTagTable } from './app/article/articleTag.table';
+import { TagTable } from './app/tag/tag.table';
+import { ArticleFavoriteTable } from './app/article/articleFavorite.table';
 
 export const db = orchidORM(
   {
@@ -13,11 +13,11 @@ export const db = orchidORM(
     log: true,
   },
   {
-    user: UserModel,
-    userFollow: UserFollowModel,
-    article: ArticleModel,
-    articleFavorite: ArticleFavoriteModel,
-    articleTag: ArticleTagModel,
-    tag: TagModel,
+    user: UserTable,
+    userFollow: UserFollowTable,
+    article: ArticleTable,
+    articleFavorite: ArticleFavoriteTable,
+    articleTag: ArticleTagTable,
+    tag: TagTable,
   }
 );

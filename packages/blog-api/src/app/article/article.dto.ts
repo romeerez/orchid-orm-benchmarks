@@ -1,4 +1,4 @@
-import { articleSchema } from './article.model';
+import { articleSchema } from './article.table';
 import { z } from 'zod';
 import { userDto } from '../user/user.dto';
 

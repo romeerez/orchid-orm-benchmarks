@@ -2,7 +2,7 @@ import { routeHandler } from '../../lib/routeHandler';
 import { db } from '../../db';
 import { encryptPassword } from '../../lib/password';
 import { createToken } from '../../lib/jwt';
-import { userSchema } from './user.model';
+import { userSchema } from './user.table';
 import { ApiError } from '../../lib/errors';
 import { comparePassword } from '../../lib/password';
 import { omit } from '../../lib/utils';

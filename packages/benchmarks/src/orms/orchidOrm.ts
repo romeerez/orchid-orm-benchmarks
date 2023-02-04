@@ -1,8 +1,8 @@
-import { createModel, orchidORM } from 'orchid-orm';
+import { createBaseTable, orchidORM } from 'orchid-orm';
 import { config } from '../config';
 import { columnTypes } from 'pqb';
 
-const Model = createModel({
+const Model = createBaseTable({
   columnTypes: {
     ...columnTypes,
     text: () => columnTypes.text(0, Infinity),
@@ -63,6 +63,7 @@ class PostModel extends Model {
 export type TagRecord = TagModel['columns']['type'];
 class TagModel extends Model {
   table = 'tag';
+  noPrimaryKey = true;
   columns = this.setColumns((t) => ({
     name: t.text().primaryKey(),
   }));

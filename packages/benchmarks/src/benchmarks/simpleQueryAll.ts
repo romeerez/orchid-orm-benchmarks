@@ -4,6 +4,9 @@ import { prisma } from '../orms/prisma';
 import { sequelize } from '../orms/sequelize';
 import { kysely } from '../orms/kysely';
 import { knex } from '../orms/knex';
+import * as zapatos from 'zapatos/db';
+import type * as s from 'zapatos/schema';
+import { pool } from '../orms/zapatos/pool';
 
 const recordsCount = 100;
 const runTimes = 1000;
@@ -72,6 +75,17 @@ export const run = async (orm?: string) => {
         },
         stop() {
           return knex.destroy();
+        },
+      },
+      zapatos: {
+        async run() {
+          await zapatos.sql<
+            s.user.SQL,
+            s.user.Selectable[]
+          >`SELECT * FROM ${'user'}`.run(pool);
+        },
+        stop() {
+          return pool.end();
         },
       },
     }

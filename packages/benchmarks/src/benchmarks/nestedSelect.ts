@@ -13,6 +13,8 @@ import {
   SequelizePostTag,
   SequelizeUser,
 } from '../orms/sequelize';
+import * as zapatos from 'zapatos/db';
+import { pool } from '../orms/zapatos/pool';
 
 const runTimes = 500;
 const recordsCount = 30;
@@ -216,6 +218,66 @@ export const run = async (orm?: string) => {
         },
         stop() {
           return sequelize.close();
+        },
+      },
+      zapatos: {
+        async run() {
+          const result = await zapatos
+            .select('post', zapatos.all, {
+              columns: ['id', 'title', 'description'],
+              order: { by: 'createdAt', direction: 'DESC' },
+              lateral: {
+                author: zapatos.selectExactlyOne(
+                  'user',
+                  {
+                    id: zapatos.parent('userId'),
+                  },
+                  {
+                    columns: ['id', 'firstName', 'lastName'],
+                  }
+                ),
+                tags: zapatos.select(
+                  'postTag',
+                  {
+                    postId: zapatos.parent('id'),
+                  },
+                  {
+                    columns: ['tagName'],
+                  }
+                ),
+                lastComments: zapatos.select(
+                  'comment',
+                  {
+                    postId: zapatos.parent('id'),
+                  },
+                  {
+                    columns: ['id', 'text'],
+                    order: { by: 'createdAt', direction: 'DESC' },
+                    limit: commentsPerPost,
+                    lateral: {
+                      author: zapatos.select(
+                        'user',
+                        {
+                          id: zapatos.parent('userId'),
+                        },
+                        {
+                          columns: ['id', 'firstName', 'lastName'],
+                        }
+                      ),
+                    },
+                  }
+                ),
+              },
+            })
+            .run(pool);
+
+          result.map((post) => ({
+            ...post,
+            tags: post.tags.map((tag) => tag.tagName),
+          }));
+        },
+        stop() {
+          return pool.end();
         },
       },
     }

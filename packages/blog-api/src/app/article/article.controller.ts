@@ -209,7 +209,7 @@ export const deleteArticleRoute = routeHandler(
       const articleQuery = db.article.find(article.id);
 
       if (article.tagIds.length) {
-        await articleQuery.articleTags.delete(true);
+        await articleQuery.articleTags.where().delete();
       }
 
       await articleQuery.delete();

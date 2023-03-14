@@ -6,7 +6,7 @@ import { ArticleFavoriteTable } from './articleFavorite.table';
 import { tableToZod } from 'orchid-orm-schema-to-zod';
 
 export class ArticleTable extends BaseTable {
-  table = 'article';
+  readonly table = 'article';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
     userId: t.integer().foreignKey('user', 'id').index(),

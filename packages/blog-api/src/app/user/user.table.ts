@@ -3,7 +3,7 @@ import { tableToZod } from 'orchid-orm-schema-to-zod';
 import { UserFollowTable } from './userFollow.table';
 
 export class UserTable extends BaseTable {
-  table = 'user';
+  readonly table = 'user';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
     username: t.text().unique().max(30),

@@ -3,7 +3,7 @@ import { tableToZod } from 'orchid-orm-schema-to-zod';
 import { ArticleTagTable } from '../article/articleTag.table';
 
 export class TagTable extends BaseTable {
-  table = 'tag';
+  readonly table = 'tag';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
     name: t.text().min(3).max(20),

@@ -12,7 +12,7 @@ const Model = createBaseTable({
 
 export type UserRecord = UserModel['columns']['type'];
 class UserModel extends Model {
-  table = 'user';
+  readonly table = 'user';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
     email: t.text().unique(),
@@ -28,7 +28,7 @@ class UserModel extends Model {
 
 export type PostRecord = PostModel['columns']['type'];
 class PostModel extends Model {
-  table = 'post';
+  readonly table = 'post';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
     userId: t.integer().foreignKey('user', 'id'),
@@ -62,7 +62,7 @@ class PostModel extends Model {
 
 export type TagRecord = TagModel['columns']['type'];
 class TagModel extends Model {
-  table = 'tag';
+  readonly table = 'tag';
   noPrimaryKey = true;
   columns = this.setColumns((t) => ({
     name: t.text().primaryKey(),
@@ -71,7 +71,7 @@ class TagModel extends Model {
 
 export type PostTagRecord = PostTagModel['columns']['type'];
 class PostTagModel extends Model {
-  table = 'postTag';
+  readonly table = 'postTag';
   columns = this.setColumns((t) => ({
     postId: t.integer().foreignKey('post', 'id'),
     tagName: t.text().foreignKey('tag', 'name'),
@@ -88,7 +88,7 @@ class PostTagModel extends Model {
 
 export type CommentRecord = CommentModel['columns']['type'];
 class CommentModel extends Model {
-  table = 'comment';
+  readonly table = 'comment';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
     userId: t.integer().foreignKey('user', 'id'),

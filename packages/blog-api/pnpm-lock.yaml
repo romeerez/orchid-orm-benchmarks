@@ -12,14 +12,14 @@ specifiers:
   fastify: ^4.9.2
   jest: ^29.2.2
   jsonwebtoken: ^8.5.1
-  orchid-orm: 1.6.4
-  orchid-orm-schema-to-zod: 0.3.4
-  orchid-orm-test-factory: 0.3.4
+  orchid-orm: 1.6.8
+  orchid-orm-schema-to-zod: 0.3.5
+  orchid-orm-test-factory: 0.3.8
   pg: ^8.8.0
   pg-transactional-tests: 1.0.7
   pino-pretty: ^9.1.1
-  pqb: 0.10.4
-  rake-db: 2.4.4
+  pqb: 0.10.5
+  rake-db: 2.4.5
   ts-node: ^10.9.1
   ts-node-dev: ^2.0.0
   typescript: ^4.8.4
@@ -30,9 +30,9 @@ dependencies:
   dotenv: 16.0.3
   fastify: 4.9.2
   jsonwebtoken: 8.5.1
-  orchid-orm: 1.6.4_typescript@4.8.4
-  orchid-orm-schema-to-zod: 0.3.4
-  pqb: 0.10.4
+  orchid-orm: 1.6.8_typescript@4.8.4
+  orchid-orm-schema-to-zod: 0.3.5
+  pqb: 0.10.5
   zod: 3.19.1
 
 devDependencies:
@@ -43,11 +43,11 @@ devDependencies:
   '@types/jsonwebtoken': 8.5.9
   '@types/node': 18.11.9
   jest: 29.2.2_odkjkoia5xunhxkdrka32ib6vi
-  orchid-orm-test-factory: 0.3.4_typescript@4.8.4
+  orchid-orm-test-factory: 0.3.8_typescript@4.8.4
   pg: 8.8.0
   pg-transactional-tests: 1.0.7_pg@8.8.0
   pino-pretty: 9.1.1
-  rake-db: 2.4.4
+  rake-db: 2.4.5
   ts-node: 10.9.1_c7vtmw4r5lhzpzjntnohxhujqu
   ts-node-dev: 2.0.0_c7vtmw4r5lhzpzjntnohxhujqu
   typescript: 4.8.4
@@ -2657,35 +2657,35 @@ packages:
   /orchid-core/0.1.2:
     resolution: {integrity: sha512-cXIFXmvrzuVaaC6dZifDDE6fwK9N++2U/XGTNOoVpjRUza+G5LABs3tcW+i/OFLmVryAbzZeckGAwLtY3VvfkQ==}
 
-  /orchid-orm-schema-to-zod/0.3.4:
-    resolution: {integrity: sha512-Cz6xz6ujyUl7UaUzB6tZ4yXbqKDzOQJ3OHyR55MOHNK7CPFB7CZ7RE60yUuQeYKu8IAh060WUNEoYbsA1VjO4w==}
+  /orchid-orm-schema-to-zod/0.3.5:
+    resolution: {integrity: sha512-FjHerjWyN8xJiQ9UXwWXgmN3sHLNOf8JEC6K2jkx1rfCL188ahHgSdrKIoRrbHWTh179ZZGSW1Q5RPYTiyXkpw==}
     dependencies:
       orchid-core: 0.1.2
-      pqb: 0.10.4
+      pqb: 0.10.5
       zod: 3.19.1
 
-  /orchid-orm-test-factory/0.3.4_typescript@4.8.4:
-    resolution: {integrity: sha512-E/teQUE+kJBUCIYU26xeIEXf0WpQMCXMWwkJgIh27Oo9VO9sG3PLimqPYNGx/CvY/FFWsCtnRrQHUY5OB1rw0Q==}
+  /orchid-orm-test-factory/0.3.8_typescript@4.8.4:
+    resolution: {integrity: sha512-mUkRzbX6FzGJrY3WvN1MUDemvkNowIrPw5z66ptciWaUhKdjtXw/ljaSmxYou7TFuOOMBl32wVjeDqbzDRfx4A==}
     dependencies:
       '@anatine/zod-mock': 3.6.0_@faker-js+faker@7.6.0
       '@faker-js/faker': 7.6.0
       orchid-core: 0.1.2
-      orchid-orm: 1.6.4_typescript@4.8.4
-      orchid-orm-schema-to-zod: 0.3.4
-      pqb: 0.10.4
+      orchid-orm: 1.6.8_typescript@4.8.4
+      orchid-orm-schema-to-zod: 0.3.5
+      pqb: 0.10.5
       zod: 3.19.1
     transitivePeerDependencies:
       - typescript
     dev: true
 
-  /orchid-orm/1.6.4_typescript@4.8.4:
-    resolution: {integrity: sha512-DuPezip+JuLMTvEo2lj4RbiktiEkQZHzso8mhQFcSQ1K7GVMHTELvJt3U75vfIFtZ7AtztDuIcDsk8+kZX0Hag==}
+  /orchid-orm/1.6.8_typescript@4.8.4:
+    resolution: {integrity: sha512-nSpwvLUVXoxbEl0CX8zMBMrLr5GISFL3SE+vcUCoWXgAxA24AX0sXtpW8E3nzkQ8AZlJ47SfmS1ufocxuB/g8A==}
     hasBin: true
     peerDependencies:
       typescript: '*'
     dependencies:
       orchid-core: 0.1.2
-      pqb: 0.10.4
+      pqb: 0.10.5
       prompts: 2.4.2
       typescript: 4.8.4
 
@@ -2906,8 +2906,8 @@ packages:
       xtend: 4.0.2
     dev: true
 
-  /pqb/0.10.4:
-    resolution: {integrity: sha512-nXvodQnW/Y5T0OErZIQh0AHiA9m36EH/QYhqWgc3xfx/oq8wEiSYi4Tf0cpzbAMXT8rWcWnU1tTzWYfhRy6+HA==}
+  /pqb/0.10.5:
+    resolution: {integrity: sha512-NDYoOdYE/gW8WIuoIDdBWHo7m/eMco00erI+We1tmmZxNKyM0kYV5gnE6ckJewCvD0GZB3LRWJy17WK6rGYRfw==}
     dependencies:
       orchid-core: 0.1.2
 
@@ -2959,12 +2959,12 @@ packages:
     resolution: {integrity: sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==}
     dev: false
 
-  /rake-db/2.4.4:
-    resolution: {integrity: sha512-WMc7RVSCMgqg1coaJLts3P23/x1z53K6p3HuT38U+bWSC7AiqXBEOdw7skpMUD++A8Umys7a4FKomATKpjO8yA==}
+  /rake-db/2.4.5:
+    resolution: {integrity: sha512-tGeiKWR1PeKDTfnbgEE75UOaZ9jKZt8VrluJ0G7WLonHs+VBH1C3JLlf6eP2NHjlPKnwKMcVmI24eBe8ekgHwA==}
     dependencies:
       orchid-core: 0.1.2
       pluralize: 8.0.0
-      pqb: 0.10.4
+      pqb: 0.10.5
       prompts: 2.4.2
     dev: true
 

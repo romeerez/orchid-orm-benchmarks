@@ -7,7 +7,7 @@ export const userRepo = createRepo(db.user, {
       return q.select('username', {
         following: currentUserId
           ? (q) => q.follows.where({ followerId: currentUserId }).exists()
-          : db.article.raw((t) => t.boolean(), 'false'),
+          : q.raw((t) => t.boolean(), 'false'),
       });
     },
   },

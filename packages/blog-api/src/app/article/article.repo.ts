@@ -4,10 +4,10 @@ import { userRepo } from '../user/user.repo';
 import { tagRepo } from '../tag/tag.repo';
 
 const selectFavorited = (currentUserId: number | undefined) => {
-  return currentUserId
-    ? (q: typeof db.article) =>
-        q.favorites.where({ userId: currentUserId }).exists()
-    : db.article.raw((t) => t.boolean(), 'false');
+  return (q: typeof db.article) =>
+    currentUserId
+      ? q.favorites.where({ userId: currentUserId }).exists()
+      : q.raw((t) => t.boolean(), 'false');
 };
 
 export const articleRepo = createRepo(db.article, {

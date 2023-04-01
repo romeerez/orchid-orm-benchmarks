@@ -5,7 +5,7 @@ import { ArticleTagTable } from '../article/articleTag.table';
 export class TagTable extends BaseTable {
   readonly table = 'tag';
   columns = this.setColumns((t) => ({
-    id: t.serial().primaryKey(),
+    id: t.identity().primaryKey(),
     name: t.text().min(3).max(20),
     ...t.timestamps(),
   }));

@@ -8,7 +8,7 @@ import { tableToZod } from 'orchid-orm-schema-to-zod';
 export class ArticleTable extends BaseTable {
   readonly table = 'article';
   columns = this.setColumns((t) => ({
-    id: t.serial().primaryKey(),
+    id: t.identity().primaryKey(),
     userId: t.integer().foreignKey('user', 'id').index(),
     slug: t.text().unique().min(10).max(200),
     title: t.text().min(10).max(200),

@@ -12,14 +12,14 @@ specifiers:
   fastify: ^4.9.2
   jest: ^29.2.2
   jsonwebtoken: ^8.5.1
-  orchid-orm: 1.6.36
-  orchid-orm-schema-to-zod: 0.3.33
-  orchid-orm-test-factory: 0.3.37
+  orchid-orm: 1.6.37
+  orchid-orm-schema-to-zod: 0.3.34
+  orchid-orm-test-factory: 0.3.38
   pg: ^8.8.0
   pg-transactional-tests: 1.0.7
   pino-pretty: ^9.1.1
-  pqb: 0.10.32
-  rake-db: 2.4.39
+  pqb: 0.10.33
+  rake-db: 2.4.40
   ts-node: ^10.9.1
   ts-node-dev: ^2.0.0
   typescript: ^4.8.4
@@ -30,9 +30,9 @@ dependencies:
   dotenv: 16.0.3
   fastify: 4.9.2
   jsonwebtoken: 8.5.1
-  orchid-orm: 1.6.36_typescript@4.8.4
-  orchid-orm-schema-to-zod: 0.3.33
-  pqb: 0.10.32
+  orchid-orm: 1.6.37_typescript@4.8.4
+  orchid-orm-schema-to-zod: 0.3.34
+  pqb: 0.10.33
   zod: 3.21.4
 
 devDependencies:
@@ -43,11 +43,11 @@ devDependencies:
   '@types/jsonwebtoken': 8.5.9
   '@types/node': 18.11.9
   jest: 29.2.2_odkjkoia5xunhxkdrka32ib6vi
-  orchid-orm-test-factory: 0.3.37_typescript@4.8.4
+  orchid-orm-test-factory: 0.3.38_typescript@4.8.4
   pg: 8.8.0
   pg-transactional-tests: 1.0.7_pg@8.8.0
   pino-pretty: 9.1.1
-  rake-db: 2.4.39
+  rake-db: 2.4.40
   ts-node: 10.9.1_c7vtmw4r5lhzpzjntnohxhujqu
   ts-node-dev: 2.0.0_c7vtmw4r5lhzpzjntnohxhujqu
   typescript: 4.8.4
@@ -2654,38 +2654,38 @@ packages:
       mimic-fn: 2.1.0
     dev: true
 
-  /orchid-core/0.1.15:
-    resolution: {integrity: sha512-FvEAAEWXn0lb/os3opMzIw0sagGWlF1cNy1a3aFPB2BAZZwYielC5Bzrz32zw1UTXJHPd/JJ4VdIqCsd8t9cEw==}
+  /orchid-core/0.1.16:
+    resolution: {integrity: sha512-SAY+vtVDojMtbe4wqeoOFECvwNiiN4f0xXGGx1aWKy7/TUzhYSvetmSmhNAyItds82YcZyUkrLTj//WkxUiyrA==}
 
-  /orchid-orm-schema-to-zod/0.3.33:
-    resolution: {integrity: sha512-i8Lx+cQEfV/V53YAUhIIw2fPsYp8NkMibvYhgJjYfysCY4k21Xnfd1olap7dJpfh4x8knR3NmCTItoQi9y0cvQ==}
+  /orchid-orm-schema-to-zod/0.3.34:
+    resolution: {integrity: sha512-OI7EUeda7toGTFxjMKC4n/EjrhTuPgnVjP5jzMM5HevYP+8iwFRWinzJaCAypaRpYHQr6U0ojONDjMPGtE2fng==}
     dependencies:
-      orchid-core: 0.1.15
-      pqb: 0.10.32
+      orchid-core: 0.1.16
+      pqb: 0.10.33
       zod: 3.21.4
 
-  /orchid-orm-test-factory/0.3.37_typescript@4.8.4:
-    resolution: {integrity: sha512-vSwcIrbMDswvXMqLc0hYAShvJmQrlwgWI66F0yY/XG8g2QJzqAHCSjUCAGFCwwcHzXJVtUgR+igYKkCps+y2dw==}
+  /orchid-orm-test-factory/0.3.38_typescript@4.8.4:
+    resolution: {integrity: sha512-E2n+laFOIrIRwUJ3CrcuTikQ5kK40BpaFWTEsoVOFXqcwT0uwKhoZh2sMXD6TVdRacYxvGEjcGo8R2lxSSubXw==}
     dependencies:
       '@anatine/zod-mock': 3.6.0_@faker-js+faker@7.6.0
       '@faker-js/faker': 7.6.0
-      orchid-core: 0.1.15
-      orchid-orm: 1.6.36_typescript@4.8.4
-      orchid-orm-schema-to-zod: 0.3.33
-      pqb: 0.10.32
+      orchid-core: 0.1.16
+      orchid-orm: 1.6.37_typescript@4.8.4
+      orchid-orm-schema-to-zod: 0.3.34
+      pqb: 0.10.33
       zod: 3.21.4
     transitivePeerDependencies:
       - typescript
     dev: true
 
-  /orchid-orm/1.6.36_typescript@4.8.4:
-    resolution: {integrity: sha512-Rzc0NteML8L3kFCDG1Cz5ydw7HzBFAU8TenYRXt3mfYUDhJDRePTBfynFhzh3l14Q/v3wC3MR2ibZeVXvVI4RA==}
+  /orchid-orm/1.6.37_typescript@4.8.4:
+    resolution: {integrity: sha512-rNPLil7qy3RdLHVKzSm2uzKnG3VohcZYO5EfjwPwJo5NNhkzn08uxbP/aD2P40KkZhh06L/4HkSLTAuLgCeIfQ==}
     hasBin: true
     peerDependencies:
       typescript: '*'
     dependencies:
-      orchid-core: 0.1.15
-      pqb: 0.10.32
+      orchid-core: 0.1.16
+      pqb: 0.10.33
       prompts: 2.4.2
       typescript: 4.8.4
 
@@ -2906,10 +2906,10 @@ packages:
       xtend: 4.0.2
     dev: true
 
-  /pqb/0.10.32:
-    resolution: {integrity: sha512-xFpeR0cT7uRFGewVyfvcMhYjIrZlRXhsytsmGqeDFyFZ3u0v8ncMaEoc2vY6X3iu6fWeFY6IuBh3jR9MVrnHxw==}
+  /pqb/0.10.33:
+    resolution: {integrity: sha512-L6lGYeVwb9cr6/d7gvFGOvI+G30ACtNYUG7qIllm+8+1FJ4NMxZgojGj9STWylI+n5vWq3zjqrjGWoFOnFWz5w==}
     dependencies:
-      orchid-core: 0.1.15
+      orchid-core: 0.1.16
 
   /pretty-format/29.2.1:
     resolution: {integrity: sha512-Y41Sa4aLCtKAXvwuIpTvcFBkyeYp2gdFWzXGA+ZNES3VwURIB165XO/z7CjETwzCCS53MjW/rLMyyqEnTtaOfA==}
@@ -2959,12 +2959,12 @@ packages:
     resolution: {integrity: sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==}
     dev: false
 
-  /rake-db/2.4.39:
-    resolution: {integrity: sha512-7eRBv8KAG1RIwvesBh08aFx1MoL6DZvEY+ZjRH4J5rbQ+mr07ukxNIUmlvLMWJErCzwFnd2t3LIxnwgk++QdXQ==}
+  /rake-db/2.4.40:
+    resolution: {integrity: sha512-lC40kGgHcf+CLJQg21lx2Be5bB5jkZLWib6r+RurCMTH46mlk92tQzTGn26hIeMM0BICIWjOM9Dsc6qq5aghzA==}
     dependencies:
-      orchid-core: 0.1.15
+      orchid-core: 0.1.16
       pluralize: 8.0.0
-      pqb: 0.10.32
+      pqb: 0.10.33
       prompts: 2.4.2
     dev: true
 

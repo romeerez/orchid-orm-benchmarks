@@ -79,7 +79,7 @@ export const createArticleRoute = routeHandler(
   (req) => {
     const currentUserId = getCurrentUserId(req);
 
-    return db.$transaction(async (db) => {
+    return db.$transaction(async () => {
       const { tags, ...params } = req.body;
 
       const articleId = await db.article.get('id').create({
@@ -98,7 +98,7 @@ export const createArticleRoute = routeHandler(
         },
       });
 
-      return articleRepo(db.article).selectDto(currentUserId).find(articleId);
+      return articleRepo.selectDto(currentUserId).find(articleId);
     });
   }
 );
@@ -124,13 +124,14 @@ export const updateArticleRoute = routeHandler(
   (req) => {
     const currentUserId = getCurrentUserId(req);
 
-    return db.$transaction(async (db) => {
+    return db.$transaction(async () => {
       const { slug } = req.params;
-      const repo = articleRepo(db.article);
 
-      const article = await repo.findBy({ slug }).select('id', 'userId', {
-        tags: (q) => q.tags.select('id', 'name'),
-      });
+      const article = await articleRepo
+        .findBy({ slug })
+        .select('id', 'userId', {
+          tags: (q) => q.tags.select('id', 'name'),
+        });
 
       if (article.userId !== currentUserId) {
         throw new UnauthorizedError();
@@ -138,12 +139,12 @@ export const updateArticleRoute = routeHandler(
 
       const { tags, favorite, ...params } = req.body;
 
-      await repo
+      await articleRepo
         .find(article.id)
         .update(params)
-        .updateTags(db.tag, article.tags, tags);
+        .updateTags(article.tags, tags);
 
-      return await repo.selectDto(currentUserId).find(article.id);
+      return await articleRepo.selectDto(currentUserId).find(article.id);
     });
   }
 );
@@ -195,7 +196,7 @@ export const deleteArticleRoute = routeHandler(
     const currentUserId = getCurrentUserId(req);
     const { slug } = req.params;
 
-    await db.$transaction(async (db) => {
+    await db.$transaction(async () => {
       const article = await db.article
         .select('id', 'userId', {
           tagIds: (q) => q.tags.pluck('id'),
@@ -215,7 +216,7 @@ export const deleteArticleRoute = routeHandler(
       await articleQuery.delete();
 
       if (article.tagIds.length) {
-        await tagRepo(db.tag).whereIn('id', article.tagIds).deleteUnused();
+        await tagRepo.whereIn('id', article.tagIds).deleteUnused();
       }
     });
   }

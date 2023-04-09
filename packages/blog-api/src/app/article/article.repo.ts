@@ -50,7 +50,6 @@ export const articleRepo = createRepo(db.article, {
   queryOneWithWhereMethods: {
     async updateTags(
       q,
-      tag: typeof db.tag,
       currentTags: { id: number; name: string }[],
       tags?: string[]
     ) {
@@ -79,7 +78,7 @@ export const articleRepo = createRepo(db.article, {
       });
 
       if (removeTagIds.length) {
-        await tagRepo(tag).whereIn('id', removeTagIds).deleteUnused();
+        await tagRepo.whereIn('id', removeTagIds).deleteUnused();
       }
     },
   },

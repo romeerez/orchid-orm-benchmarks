@@ -1,6 +1,7 @@
 import { rakeDb } from 'rake-db';
 import { config } from '../config';
 import { appCodeUpdater } from 'orchid-orm';
+import { BaseTable } from '../lib/baseTable';
 
 const options = [{ databaseURL: config.DATABASE_URL }];
 if (config.NODE_ENV !== 'production') {
@@ -11,11 +12,14 @@ if (config.NODE_ENV !== 'production') {
   options.push({ databaseURL: url });
 }
 
-rakeDb(options, {
+export const change = rakeDb(options, {
+  baseTable: BaseTable,
   migrationsPath: '../migrations',
   appCodeUpdater: appCodeUpdater({
     tablePath: (tableName) => `../app/tables/${tableName}.ts`,
     baseTablePath: '../lib/baseTable.ts',
     mainFilePath: '../db.ts',
   }),
+  useCodeUpdater: false,
+  import: (path) => import(path),
 });

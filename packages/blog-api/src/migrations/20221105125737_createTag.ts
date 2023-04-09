@@ -1,4 +1,4 @@
-import { change } from 'rake-db';
+import { change } from '../scripts/db';
 
 change(async (db) => {
   await db.createTable('tag', (t) => ({

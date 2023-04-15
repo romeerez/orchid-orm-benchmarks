@@ -21,5 +21,4 @@ export const change = rakeDb(options, {
     mainFilePath: '../db.ts',
   }),
   useCodeUpdater: false,
-  import: (path) => import(path),
 });

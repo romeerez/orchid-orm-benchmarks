@@ -1,16 +1,18 @@
-import {
-  patchPgForTransactions,
-  startTransaction,
-  rollbackTransaction,
-} from 'pg-transactional-tests';
+import { testTransaction } from 'orchid-orm';
 import { db } from './src/db';
 
-patchPgForTransactions();
+beforeAll(async () => {
+  await testTransaction.start(db);
+});
 
-beforeAll(startTransaction);
-beforeEach(startTransaction);
-afterEach(rollbackTransaction);
+beforeEach(async () => {
+  await testTransaction.start(db);
+});
+
+afterEach(async () => {
+  await testTransaction.rollback(db);
+});
+
 afterAll(async () => {
-  await rollbackTransaction();
-  await db.$close();
+  await testTransaction.close(db);
 });

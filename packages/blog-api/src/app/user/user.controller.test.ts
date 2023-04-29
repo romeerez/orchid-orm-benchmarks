@@ -1,12 +1,12 @@
 import { testRequest } from '../../lib/test/testRequest';
-import { userFactory } from '../../lib/test/testFactories';
+import { factory } from '../../lib/test/testFactories';
 import { db } from '../../db';
 import { verifyToken } from '../../lib/jwt';
 import { comparePassword, encryptPassword } from '../../lib/password';
 
 describe('user controller', () => {
   describe('POST /users', () => {
-    const params = userFactory.pick({
+    const params = factory.user.pick({
       username: true,
       email: true,
       password: true,
@@ -41,7 +41,7 @@ describe('user controller', () => {
 
     it('should return error when username is taken', async () => {
       const data = params.build();
-      await userFactory.create({ username: data.username });
+      await factory.user.create({ username: data.username });
 
       const res = await testRequest.post('/users', data);
 
@@ -52,7 +52,7 @@ describe('user controller', () => {
 
     it('should return error when email is taken', async () => {
       const data = params.build();
-      await userFactory.create({ email: data.email });
+      await factory.user.create({ email: data.email });
 
       const res = await testRequest.post('/users', data);
 
@@ -65,7 +65,7 @@ describe('user controller', () => {
   describe('POST /users/auth', () => {
     it('should authorize user, return user object and auth token', async () => {
       const password = 'password';
-      const user = await userFactory.create({
+      const user = await factory.user.create({
         password: await encryptPassword(password),
       });
 
@@ -98,7 +98,7 @@ describe('user controller', () => {
     });
 
     it('should return error when password is invalid', async () => {
-      const user = await userFactory.create();
+      const user = await factory.user.create();
 
       const res = await testRequest.post('/users/auth', {
         email: user.email,
@@ -113,8 +113,8 @@ describe('user controller', () => {
 
   describe('POST /users/:username/follow', () => {
     it('should follow a user', async () => {
-      const currentUser = await userFactory.create();
-      const userToFollow = await userFactory.create();
+      const currentUser = await factory.user.create();
+      const userToFollow = await factory.user.create();
 
       await testRequest
         .as(currentUser)
@@ -132,7 +132,7 @@ describe('user controller', () => {
     });
 
     it('should return not found error when no user found by username', async () => {
-      const currentUser = await userFactory.create();
+      const currentUser = await factory.user.create();
 
       const res = await testRequest
         .as(currentUser)
@@ -146,8 +146,8 @@ describe('user controller', () => {
 
   describe('DELETE /users/:username/follow', () => {
     it('should unfollow a user', async () => {
-      const currentUser = await userFactory.create();
-      const userToFollow = await userFactory.create({
+      const currentUser = await factory.user.create();
+      const userToFollow = await factory.user.create({
         follows: { create: [{ followerId: currentUser.id }] },
       });
 
@@ -164,7 +164,7 @@ describe('user controller', () => {
     });
 
     it('should return not found error when no user found by username', async () => {
-      const currentUser = await userFactory.create();
+      const currentUser = await factory.user.create();
 
       const res = await testRequest
         .as(currentUser)

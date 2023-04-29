@@ -1,4 +1,4 @@
-import { articleFactory, userFactory } from '../../lib/test/testFactories';
+import { factory } from '../../lib/test/testFactories';
 import { testRequest } from '../../lib/test/testRequest';
 import {
   expectUnauthorized,
@@ -10,8 +10,8 @@ import { articleRepo } from './article.repo';
 describe('article controller', () => {
   describe('GET /articles', () => {
     it('should load articles for public request, favorited and author following fields must be false, newer articles should go first', async () => {
-      const author = await userFactory.create();
-      await articleFactory.createList(2, { userId: author.id });
+      const author = await factory.user.create();
+      await factory.article.createList(2, { userId: author.id });
 
       const res = await testRequest.get('/articles');
 
@@ -25,12 +25,12 @@ describe('article controller', () => {
     });
 
     it('should load articles for authorized user, favorited and author following fields must have proper values, newer articles should go first', async () => {
-      const currentUser = await userFactory.create();
+      const currentUser = await factory.user.create();
 
-      const notFollowedAuthor = await userFactory.create();
-      await articleFactory.create({ userId: notFollowedAuthor.id });
+      const notFollowedAuthor = await factory.user.create();
+      await factory.article.create({ userId: notFollowedAuthor.id });
 
-      const followedAuthor = await userFactory.create({
+      const followedAuthor = await factory.user.create({
         follows: {
           create: [
             {
@@ -40,7 +40,7 @@ describe('article controller', () => {
         },
       });
 
-      await articleFactory.create({
+      await factory.article.create({
         userId: followedAuthor.id,
         favorites: {
           create: [
@@ -66,10 +66,10 @@ describe('article controller', () => {
     describe('query params', () => {
       describe('author', () => {
         it('should filter articles by username of author', async () => {
-          const [author1, author2] = await userFactory.createList(2);
+          const [author1, author2] = await factory.user.createList(2);
 
-          await articleFactory.create({ userId: author1.id });
-          await articleFactory.create({ userId: author2.id });
+          await factory.article.create({ userId: author1.id });
+          await factory.article.create({ userId: author2.id });
 
           const res = await testRequest.get('/articles', {
             query: {
@@ -85,10 +85,10 @@ describe('article controller', () => {
 
       describe('tag', () => {
         it('should filter articles by tag', async () => {
-          const author = await userFactory.create();
+          const author = await factory.user.create();
 
           // create article with matching tag
-          await articleFactory.create({
+          await factory.article.create({
             userId: author.id,
             articleTags: {
               create: ['one', 'two'].map((name) => ({
@@ -102,7 +102,7 @@ describe('article controller', () => {
           });
 
           // create article with different tags
-          await articleFactory.create({
+          await factory.article.create({
             userId: author.id,
             articleTags: {
               create: ['three', 'four'].map((name) => ({
@@ -116,7 +116,7 @@ describe('article controller', () => {
           });
 
           // create article without tags
-          await articleFactory.create({ userId: author.id });
+          await factory.article.create({ userId: author.id });
 
           const res = await testRequest.get('/articles', {
             query: {
@@ -152,9 +152,9 @@ describe('article controller', () => {
         });
 
         it('should return articles from followed authors for authorized user', async () => {
-          const currentUser = await userFactory.create();
-          const unfollowedAuthor = await userFactory.create();
-          const followedAuthor = await userFactory.create({
+          const currentUser = await factory.user.create();
+          const unfollowedAuthor = await factory.user.create();
+          const followedAuthor = await factory.user.create({
             follows: {
               create: [
                 {
@@ -164,11 +164,11 @@ describe('article controller', () => {
             },
           });
 
-          const expectedArticles = await articleFactory.createList(2, {
+          const expectedArticles = await factory.article.createList(2, {
             userId: followedAuthor.id,
           });
 
-          await articleFactory.createList(2, {
+          await factory.article.createList(2, {
             userId: unfollowedAuthor.id,
           });
 
@@ -198,9 +198,9 @@ describe('article controller', () => {
         );
 
         it('should returns only articles favorited by current user', async () => {
-          const [currentUser, author] = await userFactory.createList(2);
+          const [currentUser, author] = await factory.user.createList(2);
 
-          const favoritedArticles = await articleFactory.createList(2, {
+          const favoritedArticles = await factory.article.createList(2, {
             userId: author.id,
             favorites: {
               create: [
@@ -211,7 +211,7 @@ describe('article controller', () => {
             },
           });
 
-          await articleFactory.create({ userId: author.id });
+          await factory.article.create({ userId: author.id });
 
           const res = await testRequest.as(currentUser).get('/articles', {
             query: {
@@ -231,7 +231,7 @@ describe('article controller', () => {
   });
 
   describe('POST /articles', () => {
-    const params = articleFactory
+    const params = factory.article
       .pick({
         slug: true,
         title: true,
@@ -247,7 +247,7 @@ describe('article controller', () => {
     );
 
     it('should create article without tags, return articleDto', async () => {
-      const currentUser = await userFactory.create();
+      const currentUser = await factory.user.create();
 
       const res = await testRequest.as(currentUser).post('/articles', {
         ...params,
@@ -260,7 +260,7 @@ describe('article controller', () => {
     });
 
     it('should create article and tags, should connect existing tags, return articleDto', async () => {
-      const currentUser = await userFactory.create();
+      const currentUser = await factory.user.create();
       const tagId = await db.tag.get('id').create({ name: 'one' });
 
       const res = await testRequest.as(currentUser).post('/articles', {
@@ -294,7 +294,7 @@ describe('article controller', () => {
   });
 
   describe('PATCH /articles/:slug', () => {
-    const params = articleFactory
+    const params = factory.article
       .pick({
         slug: true,
         title: true,
@@ -307,8 +307,8 @@ describe('article controller', () => {
     );
 
     it('should return unauthorized error when trying to update article of other user', async () => {
-      const [currentUser, author] = await userFactory.createList(2);
-      const article = await articleFactory.create({
+      const [currentUser, author] = await factory.user.createList(2);
+      const article = await factory.article.create({
         userId: author.id,
       });
 
@@ -320,8 +320,8 @@ describe('article controller', () => {
     });
 
     it('should update article fields', async () => {
-      const currentUser = await userFactory.create();
-      const article = await articleFactory.create({
+      const currentUser = await factory.user.create();
+      const article = await factory.article.create({
         userId: currentUser.id,
       });
 
@@ -334,8 +334,8 @@ describe('article controller', () => {
     });
 
     it('should set new tags to article, create new tags, delete not used tags', async () => {
-      const [currentUser, otherAuthor] = await userFactory.createList(2);
-      const article = await articleFactory.create({
+      const [currentUser, otherAuthor] = await factory.user.createList(2);
+      const article = await factory.article.create({
         userId: currentUser.id,
         articleTags: {
           create: ['one', 'two'].map((name) => ({
@@ -348,7 +348,7 @@ describe('article controller', () => {
         },
       });
 
-      await articleFactory.create({
+      await factory.article.create({
         userId: otherAuthor.id,
         articleTags: {
           create: ['two', 'three'].map((name) => ({
@@ -378,8 +378,8 @@ describe('article controller', () => {
 
   describe('POST /articles/:slug/favorite', () => {
     it('should mark article as favorited when passing true', async () => {
-      const [currentUser, author] = await userFactory.createList(2);
-      const article = await articleFactory.create({
+      const [currentUser, author] = await factory.user.createList(2);
+      const article = await factory.article.create({
         userId: author.id,
       });
 
@@ -396,8 +396,8 @@ describe('article controller', () => {
     });
 
     it('should not fail when passing true and article is already favorited', async () => {
-      const [currentUser, author] = await userFactory.createList(2);
-      const article = await articleFactory.create({
+      const [currentUser, author] = await factory.user.createList(2);
+      const article = await factory.article.create({
         userId: author.id,
         favorites: {
           create: [
@@ -418,8 +418,8 @@ describe('article controller', () => {
     });
 
     it('should unmark article as favorited when passing false', async () => {
-      const [currentUser, author] = await userFactory.createList(2);
-      const article = await articleFactory.create({
+      const [currentUser, author] = await factory.user.createList(2);
+      const article = await factory.article.create({
         userId: author.id,
         favorites: {
           create: [
@@ -443,8 +443,8 @@ describe('article controller', () => {
     });
 
     it('should not fail when article is not favorited and passing false', async () => {
-      const [currentUser, author] = await userFactory.createList(2);
-      const article = await articleFactory.create({
+      const [currentUser, author] = await factory.user.createList(2);
+      const article = await factory.article.create({
         userId: author.id,
       });
 
@@ -462,8 +462,8 @@ describe('article controller', () => {
     itShouldRequireAuth(() => testRequest.delete('/articles/article-slug'));
 
     it('should return unauthorized error when trying to delete article of other user', async () => {
-      const [currentUser, author] = await userFactory.createList(2);
-      const article = await articleFactory.create({
+      const [currentUser, author] = await factory.user.createList(2);
+      const article = await factory.article.create({
         userId: author.id,
       });
 
@@ -475,8 +475,8 @@ describe('article controller', () => {
     });
 
     it('should delete article', async () => {
-      const currentUser = await userFactory.create();
-      const article = await articleFactory.create({
+      const currentUser = await factory.user.create();
+      const article = await factory.article.create({
         userId: currentUser.id,
       });
 
@@ -487,8 +487,8 @@ describe('article controller', () => {
     });
 
     it('should delete unused tags, and leave used tags', async () => {
-      const currentUser = await userFactory.create();
-      const article = await articleFactory.create({
+      const currentUser = await factory.user.create();
+      const article = await factory.article.create({
         userId: currentUser.id,
         articleTags: {
           create: ['one', 'two'].map((name) => ({
@@ -501,7 +501,7 @@ describe('article controller', () => {
         },
       });
 
-      await articleFactory.create({
+      await factory.article.create({
         userId: currentUser.id,
         articleTags: {
           create: ['two', 'three'].map((name) => ({

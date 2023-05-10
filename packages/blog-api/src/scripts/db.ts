@@ -1,6 +1,6 @@
 import { rakeDb } from 'rake-db';
 import { config } from '../config';
-import { appCodeUpdater } from 'orchid-orm';
+import { appCodeUpdater } from 'orchid-orm/codegen';
 import { BaseTable } from '../lib/baseTable';
 
 const options = [{ databaseURL: config.DATABASE_URL }];
@@ -17,8 +17,7 @@ export const change = rakeDb(options, {
   migrationsPath: '../migrations',
   appCodeUpdater: appCodeUpdater({
     tablePath: (tableName) => `../app/tables/${tableName}.ts`,
-    baseTablePath: '../lib/baseTable.ts',
-    mainFilePath: '../db.ts',
+    ormPath: '../db.ts',
   }),
   useCodeUpdater: false,
 });

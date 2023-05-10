@@ -1,38 +1,38 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@prisma/client': ^4.6.1
+  '@prisma/client': ^4.13.0
   '@swc/core': ^1.3.14
   '@swc/jest': ^0.2.23
   '@types/node': ^18.11.9
-  '@types/pg': ^8.6.5
+  '@types/pg': ^8.6.6
   dotenv: ^16.0.3
-  knex: ^2.3.0
-  kysely: ^0.22.0
-  orchid-orm: ^1.5.19
-  orchid-orm-test-factory: ^0.2.25
+  knex: ^2.4.2
+  kysely: ^0.24.2
+  orchid-orm: 1.9.18
+  orchid-orm-test-factory: 0.3.64
   pg: ^8.8.0
-  pqb: ^0.9.12
-  prisma: ^4.6.1
-  rake-db: ^2.3.17
-  sequelize: ^6.25.6
+  pqb: 0.11.16
+  prisma: ^4.13.0
+  rake-db: 2.8.15
+  sequelize: ^6.31.1
   ts-node: ^10.9.1
   typescript: ^4.8.4
   zapatos: ^6.1.4
   zod: ^3.19.1
 
 dependencies:
-  '@prisma/client': 4.9.0_prisma@4.9.0
+  '@prisma/client': 4.13.0_prisma@4.13.0
   '@types/pg': 8.6.6
   dotenv: 16.0.3
   knex: 2.4.2_pg@8.9.0
-  kysely: 0.22.0
-  orchid-orm: 1.5.19_typescript@4.9.5
-  orchid-orm-test-factory: 0.2.25_typescript@4.9.5
-  pqb: 0.9.12
-  prisma: 4.9.0
-  rake-db: 2.3.17
-  sequelize: 6.28.0_pg@8.9.0
+  kysely: 0.24.2
+  orchid-orm: 1.9.18_typescript@4.9.5
+  orchid-orm-test-factory: 0.3.64_typescript@4.9.5
+  pqb: 0.11.16
+  prisma: 4.13.0
+  rake-db: 2.8.15
+  sequelize: 6.31.1_pg@8.9.0
   zapatos: 6.1.4_4tztome7co4cmmhhyszmamjzhi
   zod: 3.20.2
 
@@ -101,8 +101,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@prisma/client/4.9.0_prisma@4.9.0:
-    resolution: {integrity: sha512-bz6QARw54sWcbyR1lLnF2QHvRW5R/Jxnbbmwh3u+969vUKXtBkXgSgjDA85nji31ZBlf7+FrHDy5x+5ydGyQDg==}
+  /@prisma/client/4.13.0_prisma@4.13.0:
+    resolution: {integrity: sha512-YaiiICcRB2hatxsbnfB66uWXjcRw3jsZdlAVxmx0cFcTc/Ad/sKdHCcWSnqyDX47vAewkjRFwiLwrOUjswVvmA==}
     engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:
@@ -111,16 +111,16 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
-      prisma: 4.9.0
+      '@prisma/engines-version': 4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a
+      prisma: 4.13.0
     dev: false
 
-  /@prisma/engines-version/4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5:
-    resolution: {integrity: sha512-M16aibbxi/FhW7z1sJCX8u+0DriyQYY5AyeTH7plQm9MLnURoiyn3CZBqAyIoQ+Z1pS77usCIibYJWSgleBMBA==}
+  /@prisma/engines-version/4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a:
+    resolution: {integrity: sha512-fsQlbkhPJf08JOzKoyoD9atdUijuGBekwoOPZC3YOygXEml1MTtgXVpnUNchQlRSY82OQ6pSGQ9PxUe4arcSLQ==}
     dev: false
 
-  /@prisma/engines/4.9.0:
-    resolution: {integrity: sha512-t1pt0Gsp+HcgPJrHFc+d/ZSAaKKWar2G/iakrE07yeKPNavDP3iVKPpfXP22OTCHZUWf7OelwKJxQgKAm5hkgw==}
+  /@prisma/engines/4.13.0:
+    resolution: {integrity: sha512-HrniowHRZXHuGT9XRgoXEaP2gJLXM5RMoItaY2PkjvuZ+iHc0Zjbm/302MB8YsPdWozAPHHn+jpFEcEn71OgPw==}
     requiresBuild: true
     dev: false
 
@@ -320,11 +320,6 @@ packages:
     hasBin: true
     dev: true
 
-  /ansi-colors/4.1.3:
-    resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}
-    engines: {node: '>=6'}
-    dev: false
-
   /ansi-styles/4.3.0:
     resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
     engines: {node: '>=8'}
@@ -401,13 +396,6 @@ packages:
   /drange/1.1.1:
     resolution: {integrity: sha512-pYxfDYpued//QpnLIm4Avk7rsNtAtQkUES2cwAYSvD/wd2pKD71gN2Ebj3e7klzXwjocvE8c5vx/1fxwpqmSxA==}
     engines: {node: '>=4'}
-    dev: false
-
-  /enquirer/2.3.6:
-    resolution: {integrity: sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==}
-    engines: {node: '>=8.6'}
-    dependencies:
-      ansi-colors: 4.1.3
     dev: false
 
   /escalade/3.1.1:
@@ -517,8 +505,8 @@ packages:
       - supports-color
     dev: false
 
-  /kysely/0.22.0:
-    resolution: {integrity: sha512-ZE3qWtnqLOalodzfK5QUEcm7AEulhxsPNuKaGFsC3XiqO92vMLm+mAHk/NnbSIOtC4RmGm0nsv700i8KDp1gfQ==}
+  /kysely/0.24.2:
+    resolution: {integrity: sha512-+7eaTJNUYm2yRq1x+lEOZc+78TO35dTZ9b0dh49+Z9CTt2byMSbMiOKpwPlOyCAaHD4kILkAYWYZNywFlmBwRA==}
     engines: {node: '>=14.0.0'}
     dev: false
 
@@ -551,33 +539,41 @@ packages:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: false
 
-  /orchid-orm-schema-to-zod/0.2.18:
-    resolution: {integrity: sha512-BfyjnSoZBLVontu2ey/20u5LQnGdw8SBi/Z6hyRFXYwyMCMF7g3zzedZJiImgLPwf++hJQdev55BCf0wRplInQ==}
-    dependencies:
-      pqb: 0.9.12
-      zod: 3.20.2
+  /orchid-core/0.4.5:
+    resolution: {integrity: sha512-fChCYiv4Aj9TA9naLpTos91RxCWlRcddKhOvPnpqUiBAD4a6+ISOIgBH6GGb2oVId17vHmGkGM7rqexxWI0GxA==}
     dev: false
 
-  /orchid-orm-test-factory/0.2.25_typescript@4.9.5:
-    resolution: {integrity: sha512-bhDPF7Vg3VrblIkWWbht1PFoVsWMcKhoyfVTHK/PKPiDFgJQuVHzO3ywsGDzxmbIJ8IvQsFYvsxDJ+0n3sq+yQ==}
+  /orchid-orm-schema-to-zod/0.3.55:
+    resolution: {integrity: sha512-u+bA4LNGfQcdTDmXQbpujvRO8vE9+/Dc227G22RjwY4mtMpw/wKRrRqxsracYyC4d8H4bxepcoP8WQYmsW37og==}
+    dependencies:
+      orchid-core: 0.4.5
+      pqb: 0.11.16
+      zod: 3.21.4
+    dev: false
+
+  /orchid-orm-test-factory/0.3.64_typescript@4.9.5:
+    resolution: {integrity: sha512-5BPU6pqg042S+0QDGSc9fc4ScnQ0k28lafoz02JB+MnKAj7uI0ABKlcbi4n1/dOTM3TDCHMchzyqnk/w+60FWQ==}
     dependencies:
       '@anatine/zod-mock': 3.8.3_@faker-js+faker@7.6.0
       '@faker-js/faker': 7.6.0
-      orchid-orm: 1.5.19_typescript@4.9.5
-      orchid-orm-schema-to-zod: 0.2.18
-      pqb: 0.9.12
-      zod: 3.20.2
+      orchid-core: 0.4.5
+      orchid-orm: 1.9.18_typescript@4.9.5
+      orchid-orm-schema-to-zod: 0.3.55
+      pqb: 0.11.16
+      zod: 3.21.4
     transitivePeerDependencies:
       - typescript
     dev: false
 
-  /orchid-orm/1.5.19_typescript@4.9.5:
-    resolution: {integrity: sha512-80VCzfI4AYw27iE/1AtSMXaX/bbtRbpIilFFDiMFSbkkfX4ev+53lYWnmvHVfHltMDw9otK18xOaW+w1S2+wgw==}
+  /orchid-orm/1.9.18_typescript@4.9.5:
+    resolution: {integrity: sha512-1bclOOWXYoQXUnmIeo/nN/EnK3scuy+K1JyR/VpnIL+D2pYXxeZHmT6RCWLFB13qxRV+KEdq27izIIrSvQrMgw==}
     hasBin: true
     peerDependencies:
       typescript: '*'
     dependencies:
-      pqb: 0.9.12
+      inflection: 1.13.4
+      orchid-core: 0.4.5
+      pqb: 0.11.16
       prompts: 2.4.2
       typescript: 4.9.5
     dev: false
@@ -638,11 +634,6 @@ packages:
     dependencies:
       split2: 4.1.0
 
-  /pluralize/8.0.0:
-    resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
-    engines: {node: '>=4'}
-    dev: false
-
   /postgres-array/2.0.0:
     resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
     engines: {node: '>=4'}
@@ -661,17 +652,19 @@ packages:
     dependencies:
       xtend: 4.0.2
 
-  /pqb/0.9.12:
-    resolution: {integrity: sha512-yMIyZ8jbgw9zZkQqO6hxX5P8E6XtSgc2JjoU2/vSggLL/HxuwBaU5GHw7jsbnqMzAEDSYAakmYbi/D2WkrGgxA==}
+  /pqb/0.11.16:
+    resolution: {integrity: sha512-9SBgnFvjkZKV5Tu7cuCjFjlbQqyFo8V3D9JmIQFP38d1MN6XfnYVKmu9PEHli2+tvzpMqP+wEwJSPLGoIXN3ig==}
+    dependencies:
+      orchid-core: 0.4.5
     dev: false
 
-  /prisma/4.9.0:
-    resolution: {integrity: sha512-bS96oZ5oDFXYgoF2l7PJ3Mp1wWWfLOo8B/jAfbA2Pn0Wm5Z/owBHzaMQKS3i1CzVBDWWPVnOohmbJmjvkcHS5w==}
+  /prisma/4.13.0:
+    resolution: {integrity: sha512-L9mqjnSmvWIRCYJ9mQkwCtj4+JDYYTdhoyo8hlsHNDXaZLh/b4hR0IoKIBbTKxZuyHQzLopb/+0Rvb69uGV7uA==}
     engines: {node: '>=14.17'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 4.9.0
+      '@prisma/engines': 4.13.0
     dev: false
 
   /prompts/2.4.2:
@@ -682,12 +675,12 @@ packages:
       sisteransi: 1.0.5
     dev: false
 
-  /rake-db/2.3.17:
-    resolution: {integrity: sha512-Kz3hY7uEoGpPjCRKWl0itqSaByqx6ywoY7P3/SJVBPLk46CX++sX+SHYDLpkCohxB9NtLRaSkS9E5eeeGUtsOQ==}
+  /rake-db/2.8.15:
+    resolution: {integrity: sha512-9AiQQV6Yu4GfoEtXhXBn0PON+YPs5rBiLEVtg0Hf/qFrUoAgwBG3qg1jPYM3GukI8ZgIP0Y/SfhCEqNDLt3lAA==}
     dependencies:
-      enquirer: 2.3.6
-      pluralize: 8.0.0
-      pqb: 0.9.12
+      orchid-core: 0.4.5
+      pqb: 0.11.16
+      prompts: 2.4.2
     dev: false
 
   /randexp/0.5.3:
@@ -741,8 +734,8 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: false
 
-  /sequelize/6.28.0_pg@8.9.0:
-    resolution: {integrity: sha512-+WHqvUQgTp19GLkt+gyQ+F6qg+FIEO2O5F9C0TOYV/PjZ2a/XwWvVkL1NCkS4VSIjVVvAUutiW6Wv9ofveGaVw==}
+  /sequelize/6.31.1_pg@8.9.0:
+    resolution: {integrity: sha512-cahWtRrYLjqoZP/aurGBoaxn29qQCF4bxkAUPEQ/ozjJjt6mtL4Q113S3N39mQRmX5fgxRbli+bzZARP/N51eg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       ibm_db: '*'
@@ -915,4 +908,8 @@ packages:
 
   /zod/3.20.2:
     resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+    dev: false
+
+  /zod/3.21.4:
+    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: false

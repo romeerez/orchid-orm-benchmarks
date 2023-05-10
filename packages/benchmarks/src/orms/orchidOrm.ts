@@ -1,5 +1,5 @@
 import { createBaseTable, orchidORM } from 'orchid-orm';
-import { config } from '../config';
+import { config, poolSize } from '../config';
 import { columnTypes } from 'pqb';
 
 const Model = createBaseTable({
@@ -108,6 +108,8 @@ class CommentModel extends Model {
 export const db = orchidORM(
   {
     databaseURL: config.databaseUrl,
+    max: poolSize,
+    min: poolSize,
   },
   {
     user: UserModel,

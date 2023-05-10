@@ -1,4 +1,4 @@
-import { getUserInsertData, runBenchmark } from '../utils/utils';
+import { dbClient, runBenchmark } from '../utils/utils';
 import { db } from '../orms/orchidOrm';
 import { prisma } from '../orms/prisma';
 import { sequelize } from '../orms/sequelize';
@@ -9,27 +9,39 @@ import type * as s from 'zapatos/schema';
 import { pool } from '../orms/zapatos/pool';
 
 const recordsCount = 100;
-const runTimes = 1000;
 
 const prepare = async () => {
-  const data: typeof db.user['inputType'][] = Array.from({
-    length: recordsCount,
-  }).map((_, i) => getUserInsertData(i));
-
-  await db.user.truncate({ cascade: true });
-  await db.user.createMany(data);
+  await dbClient.connect();
+  await dbClient.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
+  await dbClient.query(
+    `
+    INSERT INTO "user"("email", "firstName", "lastName", "bio", "age", "city", "country")
+    SELECT
+      'email-' || i || '@mail.com',
+      'first name',
+      'last name',
+      'user biography sentence is written in the bio column of the user table',
+      30,
+      'some city',
+      'nice country'
+    FROM generate_series(1, $1) AS t(i);
+  `,
+    [recordsCount]
+  );
+  await dbClient.end();
 };
 
 export const run = async (orm?: string) => {
   await prepare();
+
   return runBenchmark(
-    { orm, runTimes },
+    { orm },
     {
       orchidOrm: {
         async run() {
           await db.user;
         },
-        stop() {
+        async stop() {
           return db.$close();
         },
       },
@@ -56,9 +68,6 @@ export const run = async (orm?: string) => {
         },
       },
       kysely: {
-        async start() {
-          await kysely.selectFrom('user').select(['id']).executeTakeFirst();
-        },
         async run() {
           await kysely.selectFrom('user').selectAll('user').execute();
         },
@@ -67,9 +76,6 @@ export const run = async (orm?: string) => {
         },
       },
       knex: {
-        async start() {
-          return knex.select(knex.raw('1'));
-        },
         async run() {
           await knex('user');
         },

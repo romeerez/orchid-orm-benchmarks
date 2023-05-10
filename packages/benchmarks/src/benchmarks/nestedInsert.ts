@@ -1,20 +1,39 @@
 import { db } from '../orms/orchidOrm';
-import { getUserInsertData, runBenchmark } from '../utils/utils';
+import { dbClient, runBenchmark } from '../utils/utils';
 import { prisma } from '../orms/prisma';
-import { sequelize } from '../orms/sequelize';
-
-const runTimes = 1000;
 
 export const run = async (orm?: string) => {
-  await db.tag.truncate({ cascade: true });
-  await db.user.truncate({ cascade: true });
+  await dbClient.connect();
+  await dbClient.query(`TRUNCATE TABLE "tag" RESTART IDENTITY CASCADE`);
+  await dbClient.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
 
   let i = 0;
 
   const tagNames = ['one', 'two', 'three', 'four', 'five'];
-  await db.tag.createMany(tagNames.map((name) => ({ name })));
+  await dbClient.query(
+    `
+      INSERT INTO "tag"("name")
+      VALUES ${tagNames.map((tag) => `('${tag}')`).join(', ')}
+    `
+  );
 
-  const userId = await db.user.get('id').create(getUserInsertData(0));
+  const {
+    rows: [{ id: userId }],
+  } = await dbClient.query<{ id: number }>(
+    `
+      INSERT INTO "user"("email", "firstName", "lastName", "bio", "age", "city", "country")
+      VALUES (
+        'email@mail.com',
+        'first name',
+        'last name',
+        'user biography sentence is written in the bio column of the user table',
+        30,
+        'some city',
+        'nice country'
+      ) 
+      RETURNING "id"
+    `
+  );
 
   const postData = {
     userId,
@@ -30,11 +49,10 @@ export const run = async (orm?: string) => {
   await runBenchmark(
     {
       orm,
-      runTimes,
       async beforeEach() {
         i = 0;
         // cascade will also truncate postTags and comments
-        await db.post.truncate({ cascade: true });
+        await dbClient.query(`TRUNCATE TABLE "post" RESTART IDENTITY CASCADE`);
       },
     },
     {
@@ -73,26 +91,8 @@ export const run = async (orm?: string) => {
           return prisma.$disconnect();
         },
       },
-      sequelize: {
-        start() {
-          return sequelize.authenticate();
-        },
-        async run() {
-          await sequelize.post.create(postData, {
-            returning: false,
-            include: [
-              {
-                association: 'comments',
-              },
-            ],
-          });
-        },
-        stop() {
-          return sequelize.close();
-        },
-      },
     }
   );
 
-  await db.$close();
+  await dbClient.end();
 };

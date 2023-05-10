@@ -3,8 +3,8 @@ import { change } from 'rake-db';
 change(async (db) => {
   await db.createTable('comment', (t) => ({
     id: t.serial().primaryKey(),
-    userId: t.integer().foreignKey('user', 'id'),
-    postId: t.integer().foreignKey('post', 'id'),
+    userId: t.integer().foreignKey('user', 'id').index(),
+    postId: t.integer().foreignKey('post', 'id').index(),
     text: t.text(),
     ...t.timestamps(),
   }));

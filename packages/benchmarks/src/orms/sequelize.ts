@@ -1,5 +1,5 @@
 import { DataTypes, Model, Sequelize, NOW } from 'sequelize';
-import { config } from '../config';
+import { config, poolSize } from '../config';
 import {
   CommentRecord,
   PostRecord,
@@ -13,6 +13,12 @@ const db = new Sequelize(config.databaseUrl, {
   define: {
     freezeTableName: true,
     timestamps: false,
+  },
+  pool: {
+    max: poolSize,
+    min: poolSize,
+    acquire: 30000,
+    idle: 10000,
   },
 });
 

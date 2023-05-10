@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const name = z
-  .enum(['simpleQueryAll', 'nestedSelect', 'simpleInsert', 'nestedInsert'])
+  .enum(['simpleSelect', 'nestedSelect', 'simpleInsert', 'nestedInsert'])
   .parse(process.argv[2]);
 
 const orm = process.argv.find((item) => item.startsWith('--orm='))?.slice(6);

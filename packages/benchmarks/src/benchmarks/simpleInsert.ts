@@ -1,5 +1,5 @@
 import { db } from '../orms/orchidOrm';
-import { getUserInsertData, runBenchmark } from '../utils/utils';
+import { dbClient, getUserInsertData, runBenchmark } from '../utils/utils';
 import { prisma } from '../orms/prisma';
 import { sequelize } from '../orms/sequelize';
 import { kysely } from '../orms/kysely';
@@ -7,24 +7,26 @@ import { knex } from '../orms/knex';
 import * as zapatos from 'zapatos/db';
 import { pool } from '../orms/zapatos/pool';
 
-const runTimes = 1000;
-
 export const run = async (orm?: string) => {
   let i = 0;
+
+  await dbClient.connect();
 
   await runBenchmark(
     {
       orm,
-      runTimes,
       async beforeEach() {
         i = 0;
-        await db.user.truncate({ cascade: true });
+        await dbClient.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
       },
     },
     {
       orchidOrm: {
         async run() {
           await db.user.count().create(getUserInsertData(i++));
+        },
+        stop() {
+          return db.$close();
         },
       },
       prisma: {
@@ -91,5 +93,5 @@ export const run = async (orm?: string) => {
     }
   );
 
-  await db.$close();
+  await dbClient.end();
 };

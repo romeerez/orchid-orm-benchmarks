@@ -12,3 +12,5 @@ const env = z
 export const config = {
   databaseUrl: env.DATABASE_URL,
 };
+
+export const poolSize = 10;

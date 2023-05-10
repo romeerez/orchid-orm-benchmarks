@@ -7,7 +7,7 @@ import {
   UserRecord,
 } from './orchidOrm';
 import { Pool } from 'pg';
-import { config } from '../config';
+import { config, poolSize } from '../config';
 
 interface Database {
   user: UserRecord;
@@ -21,6 +21,8 @@ export const kysely = new Kysely<Database>({
   dialect: new PostgresDialect({
     pool: new Pool({
       connectionString: config.databaseUrl,
+      max: poolSize,
+      min: poolSize,
     }),
   }),
 });

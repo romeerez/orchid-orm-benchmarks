@@ -1,48 +1,97 @@
+import { config, poolSize } from '../config';
+import { Client } from 'pg';
+
+export const dbClient = new Client({
+  connectionString: config.databaseUrl,
+});
+
 export type BenchCase = {
   start?(): Promise<void>;
   run(): Promise<void>;
   stop?(): Promise<void>;
 };
 
-const measure = async (
-  title: string,
-  fn: () => Promise<void>,
-  times: number
-) => {
-  const start = process.hrtime();
-
-  for (let i = 0; i < times; i++) {
-    await fn();
-  }
-
-  const elapsed = process.hrtime(start);
-  console.log(
-    `${title}: ${elapsed[0] ? `${elapsed[0]}s ` : ''}${(
-      elapsed[1] / 1000000
-    ).toFixed(1)}ms`
-  );
-};
+const chunkMs = 1000;
+const chunkNano = chunkMs * 1000000;
 
 export const runBenchmark = async (
   {
     orm,
-    runTimes,
     beforeEach,
+    samples = 10,
+    parallel = poolSize,
   }: {
     orm: string | undefined;
-    runTimes: number;
     beforeEach?(): Promise<void>;
+    samples?: number;
+    parallel?: number;
   },
   benchCases: Record<string, BenchCase>
 ) => {
   const cases = orm ? { [orm]: benchCases[orm] } : benchCases;
 
+  const results: Record<string, number[]> = {};
   for (const name in cases) {
-    await beforeEach?.();
-    const bench = cases[name];
-    await bench.start?.();
-    await measure(name, bench.run, runTimes);
-    await bench.stop?.();
+    results[name] = [];
+  }
+
+  const last = samples - 1;
+  for (let s = 0; s <= last; s++) {
+    for (const name in cases) {
+      await beforeEach?.();
+      const bench = cases[name];
+      if (s === 0) {
+        await bench.start?.();
+      }
+
+      const { run } = bench;
+
+      // warmup connections
+      await new Promise<void>((resolve, reject) => {
+        let left = parallel;
+        const then = () => {
+          left--;
+          if (left === 0) resolve();
+        };
+
+        for (let i = 0; i < parallel; i++) {
+          run().then(then, reject);
+        }
+      });
+
+      const start = process.hrtime.bigint();
+      let ops = 0;
+
+      await new Promise<void>((resolve, reject) => {
+        const next = () => {
+          const elapsed = process.hrtime.bigint() - start;
+          if (elapsed >= chunkNano) {
+            resolve();
+          } else {
+            ops++;
+            run().then(next, reject);
+          }
+        };
+
+        for (let i = 0; i < parallel; i++) {
+          run().then(next, reject);
+        }
+      });
+
+      results[name][s] = ops;
+
+      if (s === last) {
+        await bench.stop?.();
+      }
+    }
+  }
+
+  for (const name in results) {
+    const sample = results[name];
+    const n = sample.length;
+    const mean = Math.round(sample.reduce((sum, r) => sum + r, 0) / n);
+
+    console.log(`${name}: ${(mean * 1000) / chunkMs} ops/s`);
   }
 };
 

@@ -1,25 +1,25 @@
 import { db } from '../orms/orchidOrm';
-import { dbClient, runBenchmark } from '../utils/utils';
+import { makeDB, runBenchmark } from '../utils/utils';
 import { prisma } from '../orms/prisma';
+import { databaseURLs } from '../config';
 
-export const run = async (orm?: string) => {
-  await dbClient.connect();
-  await dbClient.query(`TRUNCATE TABLE "tag" RESTART IDENTITY CASCADE`);
-  await dbClient.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
+const tagNames = ['one', 'two', 'three', 'four', 'five'];
 
-  let i = 0;
+const start = async (url: string) => {
+  const db = makeDB(url);
+  await db.connect();
+  await db.query(`TRUNCATE TABLE "tag" RESTART IDENTITY CASCADE`);
+  await db.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
 
-  const tagNames = ['one', 'two', 'three', 'four', 'five'];
-  await dbClient.query(
+  await db.query(
     `
-      INSERT INTO "tag"("name")
-      VALUES ${tagNames.map((tag) => `('${tag}')`).join(', ')}
+      INSERT INTO "tag"("name") VALUES ${tagNames
+        .map((tag) => `('${tag}')`)
+        .join(', ')}
     `
   );
 
-  const {
-    rows: [{ id: userId }],
-  } = await dbClient.query<{ id: number }>(
+  await db.query<{ id: number }>(
     `
       INSERT INTO "user"("email", "firstName", "lastName", "bio", "age", "city", "country")
       VALUES (
@@ -31,32 +31,39 @@ export const run = async (orm?: string) => {
         'some city',
         'nice country'
       ) 
-      RETURNING "id"
     `
   );
 
+  await db.end();
+};
+
+const prepare = async (url: string) => {
+  const db = makeDB(url);
+  await db.connect();
+  await db.query(`TRUNCATE TABLE "post" RESTART IDENTITY CASCADE`);
+  await db.end();
+};
+
+export const run = async (orm?: string) => {
   const postData = {
-    userId,
+    userId: 1,
     title: 'Post title',
     description: 'Post description',
   };
 
   const commentData = {
-    userId,
+    userId: 1,
     text: 'Comment text',
   };
 
   await runBenchmark(
     {
       orm,
-      async beforeEach() {
-        i = 0;
-        // cascade will also truncate postTags and comments
-        await dbClient.query(`TRUNCATE TABLE "post" RESTART IDENTITY CASCADE`);
-      },
     },
     {
       orchidOrm: {
+        start: () => start(databaseURLs.orchid),
+        prepare: () => prepare(databaseURLs.orchid),
         async run() {
           await db.post.count().create({
             ...postData,
@@ -68,11 +75,14 @@ export const run = async (orm?: string) => {
             },
           });
         },
+        stop: () => db.$close(),
       },
       prisma: {
-        start() {
-          return prisma.$connect();
+        async start() {
+          await start(databaseURLs.prisma);
+          await prisma.$connect();
         },
+        prepare: () => prepare(databaseURLs.prisma),
         async run() {
           await prisma.post.create({
             select: null,
@@ -87,12 +97,8 @@ export const run = async (orm?: string) => {
             },
           });
         },
-        stop() {
-          return prisma.$disconnect();
-        },
+        stop: () => prisma.$disconnect(),
       },
     }
   );
-
-  await dbClient.end();
 };

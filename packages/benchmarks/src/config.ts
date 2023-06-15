@@ -9,8 +9,14 @@ const env = z
   })
   .parse(process.env);
 
-export const config = {
-  databaseUrl: env.DATABASE_URL,
+const url = env.DATABASE_URL;
+
+export const databaseURLs = {
+  prisma: url,
+  orchid: `${url}-orchid`,
+  sequelize: `${url}-sequelize`,
+  knex: `${url}-knex`,
+  kysely: `${url}-kysely`,
 };
 
 export const poolSize = 10;

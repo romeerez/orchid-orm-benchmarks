@@ -1,13 +1,16 @@
-import { config, poolSize } from '../config';
+import { poolSize } from '../config';
 import { Client } from 'pg';
 
-export const dbClient = new Client({
-  connectionString: config.databaseUrl,
-});
+export const makeDB = (url: string) => {
+  return new Client({
+    connectionString: url,
+  });
+};
 
 export type BenchCase = {
+  prepare?(): Promise<void>;
   start?(): Promise<void>;
-  run(): Promise<void>;
+  run(iteration: number): Promise<void>;
   stop?(): Promise<void>;
 };
 
@@ -17,12 +20,10 @@ const chunkNano = chunkMs * 1000000;
 export const runBenchmark = async (
   {
     orm,
-    beforeEach,
     samples = 10,
     parallel = poolSize,
   }: {
     orm: string | undefined;
-    beforeEach?(): Promise<void>;
     samples?: number;
     parallel?: number;
   },
@@ -38,13 +39,16 @@ export const runBenchmark = async (
   const last = samples - 1;
   for (let s = 0; s <= last; s++) {
     for (const name in cases) {
-      await beforeEach?.();
       const bench = cases[name];
+
+      await bench.prepare?.();
+
       if (s === 0) {
         await bench.start?.();
       }
 
       const { run } = bench;
+      let iteration = 0;
 
       // warmup connections
       await new Promise<void>((resolve, reject) => {
@@ -55,7 +59,7 @@ export const runBenchmark = async (
         };
 
         for (let i = 0; i < parallel; i++) {
-          run().then(then, reject);
+          run(iteration++).then(then, reject);
         }
       });
 
@@ -63,18 +67,20 @@ export const runBenchmark = async (
       let ops = 0;
 
       await new Promise<void>((resolve, reject) => {
+        let queued = parallel;
+
         const next = () => {
           const elapsed = process.hrtime.bigint() - start;
           if (elapsed >= chunkNano) {
-            resolve();
+            if (--queued === 0) resolve();
           } else {
+            run(iteration++).then(next, reject);
             ops++;
-            run().then(next, reject);
           }
         };
 
         for (let i = 0; i < parallel; i++) {
-          run().then(next, reject);
+          run(iteration++).then(next, reject);
         }
       });
 

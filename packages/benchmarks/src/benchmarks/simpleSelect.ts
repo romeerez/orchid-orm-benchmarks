@@ -1,19 +1,18 @@
-import { dbClient, runBenchmark } from '../utils/utils';
+import { makeDB, runBenchmark } from '../utils/utils';
 import { db } from '../orms/orchidOrm';
 import { prisma } from '../orms/prisma';
 import { sequelize } from '../orms/sequelize';
 import { kysely } from '../orms/kysely';
 import { knex } from '../orms/knex';
-import * as zapatos from 'zapatos/db';
-import type * as s from 'zapatos/schema';
-import { pool } from '../orms/zapatos/pool';
+import { databaseURLs } from '../config';
 
 const recordsCount = 100;
 
-const prepare = async () => {
-  await dbClient.connect();
-  await dbClient.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
-  await dbClient.query(
+const prepare = async (url: string) => {
+  const db = makeDB(url);
+  await db.connect();
+  await db.query(`TRUNCATE TABLE "user" RESTART IDENTITY CASCADE`);
+  await db.query(
     `
     INSERT INTO "user"("email", "firstName", "lastName", "bio", "age", "city", "country")
     SELECT
@@ -28,16 +27,15 @@ const prepare = async () => {
   `,
     [recordsCount]
   );
-  await dbClient.end();
+  await db.end();
 };
 
-export const run = async (orm?: string) => {
-  await prepare();
-
+export const run = (orm?: string) => {
   return runBenchmark(
     { orm },
     {
       orchidOrm: {
+        start: () => prepare(databaseURLs.orchid),
         async run() {
           await db.user;
         },
@@ -46,8 +44,9 @@ export const run = async (orm?: string) => {
         },
       },
       prisma: {
-        start() {
-          return prisma.$connect();
+        async start() {
+          await prepare(databaseURLs.prisma);
+          await prisma.$connect();
         },
         async run() {
           await prisma.user.findMany();
@@ -57,8 +56,9 @@ export const run = async (orm?: string) => {
         },
       },
       sequelize: {
-        start() {
-          return sequelize.authenticate();
+        async start() {
+          await prepare(databaseURLs.sequelize);
+          await sequelize.authenticate();
         },
         async run() {
           await sequelize.user.findAll();
@@ -68,6 +68,7 @@ export const run = async (orm?: string) => {
         },
       },
       kysely: {
+        start: () => prepare(databaseURLs.kysely),
         async run() {
           await kysely.selectFrom('user').selectAll('user').execute();
         },
@@ -76,22 +77,12 @@ export const run = async (orm?: string) => {
         },
       },
       knex: {
+        start: () => prepare(databaseURLs.knex),
         async run() {
           await knex('user');
         },
         stop() {
           return knex.destroy();
-        },
-      },
-      zapatos: {
-        async run() {
-          await zapatos.sql<
-            s.user.SQL,
-            s.user.Selectable[]
-          >`SELECT * FROM ${'user'}`.run(pool);
-        },
-        stop() {
-          return pool.end();
         },
       },
     }

@@ -1,7 +1,11 @@
 import path from 'path';
 import { rakeDb } from 'rake-db';
-import { config } from '../config';
+import { databaseURLs } from '../config';
 
 const migrationsPath = path.resolve(__dirname, '..', 'migrations');
 
-rakeDb({ databaseURL: config.databaseUrl }, { migrationsPath });
+const allDatabases = Object.values(databaseURLs).map((databaseURL) => ({
+  databaseURL,
+}));
+
+export const change = rakeDb(allDatabases, { migrationsPath });

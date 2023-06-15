@@ -1,9 +1,9 @@
 import Knex from 'knex';
-import { config, poolSize } from '../config';
+import { databaseURLs, poolSize } from '../config';
 
 export const knex = Knex({
   client: 'pg',
-  connection: config.databaseUrl,
+  connection: databaseURLs.knex,
   pool: {
     min: poolSize,
     max: poolSize,

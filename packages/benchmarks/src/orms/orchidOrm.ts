@@ -1,17 +1,16 @@
-import { createBaseTable, orchidORM } from 'orchid-orm';
-import { config, poolSize } from '../config';
-import { columnTypes } from 'pqb';
+import { createBaseTable, orchidORM, TableType } from 'orchid-orm';
+import { databaseURLs, poolSize } from '../config';
 
-const Model = createBaseTable({
-  columnTypes: {
-    ...columnTypes,
-    text: () => columnTypes.text(0, Infinity),
-    timestamp: () => columnTypes.timestamp().asDate(),
-  },
+const BaseTable = createBaseTable({
+  columnTypes: (t) => ({
+    ...t,
+    text: () => t.text(0, Infinity),
+    timestamp: () => t.timestamp().asDate(),
+  }),
 });
 
-export type UserRecord = UserModel['columns']['type'];
-class UserModel extends Model {
+export type UserRecord = TableType<UserModel>;
+class UserModel extends BaseTable {
   readonly table = 'user';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
@@ -26,8 +25,8 @@ class UserModel extends Model {
   }));
 }
 
-export type PostRecord = PostModel['columns']['type'];
-class PostModel extends Model {
+export type PostRecord = TableType<PostModel>;
+class PostModel extends BaseTable {
   readonly table = 'post';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
@@ -60,8 +59,8 @@ class PostModel extends Model {
   };
 }
 
-export type TagRecord = TagModel['columns']['type'];
-class TagModel extends Model {
+export type TagRecord = TableType<TagModel>;
+class TagModel extends BaseTable {
   readonly table = 'tag';
   noPrimaryKey = true;
   columns = this.setColumns((t) => ({
@@ -69,8 +68,8 @@ class TagModel extends Model {
   }));
 }
 
-export type PostTagRecord = PostTagModel['columns']['type'];
-class PostTagModel extends Model {
+export type PostTagRecord = TableType<PostTagModel>;
+class PostTagModel extends BaseTable {
   readonly table = 'postTag';
   columns = this.setColumns((t) => ({
     postId: t.integer().foreignKey('post', 'id'),
@@ -86,8 +85,8 @@ class PostTagModel extends Model {
   };
 }
 
-export type CommentRecord = CommentModel['columns']['type'];
-class CommentModel extends Model {
+export type CommentRecord = TableType<CommentModel>;
+class CommentModel extends BaseTable {
   readonly table = 'comment';
   columns = this.setColumns((t) => ({
     id: t.serial().primaryKey(),
@@ -107,7 +106,7 @@ class CommentModel extends Model {
 
 export const db = orchidORM(
   {
-    databaseURL: config.databaseUrl,
+    databaseURL: databaseURLs.orchid,
     max: poolSize,
     min: poolSize,
   },

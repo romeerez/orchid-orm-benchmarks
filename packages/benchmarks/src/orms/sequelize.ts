@@ -1,5 +1,5 @@
 import { DataTypes, Model, Sequelize, NOW } from 'sequelize';
-import { config, poolSize } from '../config';
+import { databaseURLs, poolSize } from '../config';
 import {
   CommentRecord,
   PostRecord,
@@ -8,7 +8,7 @@ import {
   UserRecord,
 } from './orchidOrm';
 
-const db = new Sequelize(config.databaseUrl, {
+const db = new Sequelize(databaseURLs.sequelize, {
   logging: false,
   define: {
     freezeTableName: true,

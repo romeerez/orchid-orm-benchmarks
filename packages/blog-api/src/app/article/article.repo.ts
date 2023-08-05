@@ -2,12 +2,13 @@ import { createRepo } from 'orchid-orm';
 import { db } from '../../db';
 import { userRepo } from '../user/user.repo';
 import { tagRepo } from '../tag/tag.repo';
+import { SelectQueryBuilder } from 'pqb';
 
 const selectFavorited = (currentUserId: number | undefined) => {
-  return (q: typeof db.article) =>
+  return (q: SelectQueryBuilder<typeof db.article>) =>
     currentUserId
       ? q.favorites.where({ userId: currentUserId }).exists()
-      : q.raw((t) => t.boolean(), 'false');
+      : q.sql`false`.type((t) => t.boolean());
 };
 
 export const articleRepo = createRepo(db.article, {

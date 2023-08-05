@@ -19,18 +19,18 @@ export class ArticleTable extends BaseTable {
 
   relations = {
     author: this.belongsTo(() => UserTable, {
-      primaryKey: 'id',
-      foreignKey: 'userId',
+      columns: ['userId'],
+      references: ['id'],
     }),
 
     favorites: this.hasMany(() => ArticleFavoriteTable, {
-      primaryKey: 'id',
-      foreignKey: 'articleId',
+      columns: ['id'],
+      references: ['articleId'],
     }),
 
     articleTags: this.hasMany(() => ArticleTagTable, {
-      primaryKey: 'id',
-      foreignKey: 'articleId',
+      columns: ['id'],
+      references: ['articleId'],
     }),
 
     tags: this.hasMany(() => TagTable, {

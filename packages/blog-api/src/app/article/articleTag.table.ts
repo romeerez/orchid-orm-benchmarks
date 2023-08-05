@@ -11,8 +11,8 @@ export class ArticleTagTable extends BaseTable {
 
   relations = {
     tag: this.belongsTo(() => TagTable, {
-      primaryKey: 'id',
-      foreignKey: 'tagId',
+      columns: ['tagId'],
+      references: ['id'],
     }),
   };
 }

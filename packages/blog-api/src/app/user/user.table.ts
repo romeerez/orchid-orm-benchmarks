@@ -14,13 +14,13 @@ export class UserTable extends BaseTable {
 
   relations = {
     follows: this.hasMany(() => UserFollowTable, {
-      primaryKey: 'id',
-      foreignKey: 'followingId',
+      columns: ['id'],
+      references: ['followingId'],
     }),
 
     followings: this.hasMany(() => UserFollowTable, {
-      primaryKey: 'id',
-      foreignKey: 'followerId',
+      columns: ['id'],
+      references: ['followerId'],
     }),
   };
 }

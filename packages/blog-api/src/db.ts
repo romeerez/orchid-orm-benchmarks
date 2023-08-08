@@ -10,7 +10,7 @@ import { ArticleFavoriteTable } from './app/article/articleFavorite.table';
 export const db = orchidORM(
   {
     databaseURL: config.currentDatabaseUrl,
-    log: true,
+    log: false,
   },
   {
     user: UserTable,

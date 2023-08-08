@@ -41,7 +41,9 @@ export const routeHandler = <
     schema.result &&
     config.validateResponses &&
     deepStrict(
-      schema.result instanceof ZodType ? schema.result : z.object(schema.result)
+      Object.getPrototypeOf(schema.result)?.constructor !== Object
+        ? (schema.result as ZodTypeAny)
+        : z.object(schema.result as ZodRawShape)
     );
 
   return async (req, res) => {

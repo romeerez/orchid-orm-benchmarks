@@ -2,21 +2,21 @@ import { routeHandler } from '../../lib/routeHandler';
 import { db } from '../../db';
 import { encryptPassword } from '../../lib/password';
 import { createToken } from '../../lib/jwt';
-import { userSchema } from './user.table';
 import { ApiError } from '../../lib/errors';
 import { comparePassword } from '../../lib/password';
 import { omit } from '../../lib/utils';
 import { getCurrentUserId } from './user.service';
-import { authDto } from './user.dto';
+import {
+  authDTO,
+  userLoginDTO,
+  usernameDTO,
+  userRegisterDTO,
+} from './user.dto';
 
 export const registerUserRoute = routeHandler(
   {
-    body: userSchema.pick({
-      username: true,
-      email: true,
-      password: true,
-    }),
-    result: authDto,
+    body: userRegisterDTO,
+    result: authDTO,
   },
   async (req) => {
     try {
@@ -45,11 +45,8 @@ export const registerUserRoute = routeHandler(
 
 export const loginUserRoute = routeHandler(
   {
-    body: userSchema.pick({
-      email: true,
-      password: true,
-    }),
-    result: authDto,
+    body: userLoginDTO,
+    result: authDTO,
   },
   async (req) => {
     const user = await db.user
@@ -71,9 +68,7 @@ export const loginUserRoute = routeHandler(
 
 export const followUserRoute = routeHandler(
   {
-    params: userSchema.pick({
-      username: true,
-    }),
+    params: usernameDTO,
   },
   async (req) => {
     const userId = getCurrentUserId(req);
@@ -90,9 +85,7 @@ export const followUserRoute = routeHandler(
 
 export const unfollowUserRoute = routeHandler(
   {
-    params: userSchema.pick({
-      username: true,
-    }),
+    params: usernameDTO,
   },
   async (req) => {
     const userId = getCurrentUserId(req);

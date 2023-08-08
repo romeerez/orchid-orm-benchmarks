@@ -13,7 +13,7 @@ const selectFavorited = (currentUserId: number | undefined) => {
 
 export const articleRepo = createRepo(db.article, {
   queryMethods: {
-    selectDto(q, currentUserId: number | undefined) {
+    selectDTO(q, currentUserId: number | undefined) {
       return q.select(
         'slug',
         'title',
@@ -24,7 +24,7 @@ export const articleRepo = createRepo(db.article, {
         {
           tags: (q) => q.tags.order('name').pluck('name'),
           favorited: selectFavorited(currentUserId),
-          author: (q) => userRepo(q.author).selectDto(currentUserId),
+          author: (q) => userRepo(q.author).selectDTO(currentUserId),
         }
       );
     },

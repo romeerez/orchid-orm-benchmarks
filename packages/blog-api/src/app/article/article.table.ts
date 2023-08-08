@@ -3,7 +3,6 @@ import { UserTable } from '../user/user.table';
 import { ArticleTagTable } from './articleTag.table';
 import { TagTable } from '../tag/tag.table';
 import { ArticleFavoriteTable } from './articleFavorite.table';
-import { tableToZod } from 'orchid-orm-schema-to-zod';
 
 export class ArticleTable extends BaseTable {
   readonly table = 'article';
@@ -39,5 +38,3 @@ export class ArticleTable extends BaseTable {
     }),
   };
 }
-
-export const articleSchema = tableToZod(ArticleTable);

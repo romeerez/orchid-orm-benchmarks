@@ -5,11 +5,14 @@ import {
 } from '../user/user.service';
 import { z } from 'zod';
 import { UnauthorizedError } from '../../lib/errors';
-import { articleDto } from './article.dto';
+import {
+  articleCreateDTO,
+  articleDTO,
+  articleSlugDTO,
+  articleUpdateDTO,
+} from './article.dto';
 import { articleRepo } from './article.repo';
-import { articleSchema } from './article.table';
 import { db } from '../../db';
-import { tagSchema } from '../tag/tag.table';
 import { tagRepo } from '../tag/tag.repo';
 
 export const listArticlesRoute = routeHandler(
@@ -26,13 +29,13 @@ export const listArticlesRoute = routeHandler(
         .preprocess((s) => parseInt(s as string), z.number().min(0))
         .optional(),
     }),
-    result: articleDto.array(),
+    result: articleDTO.array(),
   },
   (req) => {
     const currentUserId = getOptionalCurrentUserId(req);
 
     let query = articleRepo
-      .selectDto(currentUserId)
+      .selectDTO(currentUserId)
       .order({
         createdAt: 'DESC',
       })
@@ -65,16 +68,8 @@ export const listArticlesRoute = routeHandler(
 
 export const createArticleRoute = routeHandler(
   {
-    body: articleSchema
-      .pick({
-        slug: true,
-        title: true,
-        body: true,
-      })
-      .extend({
-        tags: tagSchema.shape.name.array(),
-      }),
-    result: articleDto,
+    body: articleCreateDTO,
+    result: articleDTO,
   },
   (req) => {
     const currentUserId = getCurrentUserId(req);
@@ -98,28 +93,16 @@ export const createArticleRoute = routeHandler(
         },
       });
 
-      return articleRepo.selectDto(currentUserId).find(articleId);
+      return articleRepo.selectDTO(currentUserId).find(articleId);
     });
   }
 );
 
 export const updateArticleRoute = routeHandler(
   {
-    body: articleSchema
-      .pick({
-        slug: true,
-        title: true,
-        body: true,
-      })
-      .extend({
-        tags: tagSchema.shape.name.array(),
-        favorite: z.boolean(),
-      })
-      .partial(),
-    params: z.object({
-      slug: articleSchema.shape.slug,
-    }),
-    result: articleDto,
+    body: articleUpdateDTO,
+    params: articleSlugDTO,
+    result: articleDTO,
   },
   (req) => {
     const currentUserId = getCurrentUserId(req);
@@ -144,7 +127,7 @@ export const updateArticleRoute = routeHandler(
         .update(params)
         .updateTags(article.tags, tags);
 
-      return await articleRepo.selectDto(currentUserId).find(article.id);
+      return await articleRepo.selectDTO(currentUserId).find(article.id);
     });
   }
 );
@@ -154,9 +137,7 @@ export const toggleArticleFavoriteRoute = routeHandler(
     body: z.object({
       favorite: z.boolean(),
     }),
-    params: z.object({
-      slug: articleSchema.shape.slug,
-    }),
+    params: articleSlugDTO,
   },
   async (req) => {
     const currentUserId = getCurrentUserId(req);
@@ -188,9 +169,7 @@ export const toggleArticleFavoriteRoute = routeHandler(
 
 export const deleteArticleRoute = routeHandler(
   {
-    params: z.object({
-      slug: articleSchema.shape.slug,
-    }),
+    params: articleSlugDTO,
   },
   async (req) => {
     const currentUserId = getCurrentUserId(req);

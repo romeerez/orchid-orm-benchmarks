@@ -1,8 +1,11 @@
-import { articleSchema } from './article.table';
 import { z } from 'zod';
-import { userDto } from '../user/user.dto';
+import { userDTO } from '../user/user.dto';
+import { ArticleTable } from './article.table';
+import { TagTable } from '../tag/tag.table';
 
-export const articleDto = articleSchema
+const tagListDTO = TagTable.schema().shape.name.array();
+
+export const articleDTO = ArticleTable.schema()
   .pick({
     slug: true,
     title: true,
@@ -13,8 +16,26 @@ export const articleDto = articleSchema
   })
   .and(
     z.object({
-      tags: z.string().array(),
+      tags: tagListDTO,
       favorited: z.boolean(),
-      author: userDto,
+      author: userDTO,
     })
   );
+
+export const articleCreateDTO = ArticleTable.schema()
+  .pick({
+    slug: true,
+    title: true,
+    body: true,
+  })
+  .extend({
+    tags: tagListDTO,
+  });
+
+export const articleUpdateDTO = articleCreateDTO
+  .extend({
+    favorite: z.boolean(),
+  })
+  .partial();
+
+export const articleSlugDTO = ArticleTable.schema().pick({ slug: true });

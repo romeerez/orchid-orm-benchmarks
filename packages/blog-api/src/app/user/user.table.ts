@@ -1,5 +1,4 @@
 import { BaseTable } from '../../lib/baseTable';
-import { tableToZod } from 'orchid-orm-schema-to-zod';
 import { UserFollowTable } from './userFollow.table';
 
 export class UserTable extends BaseTable {
@@ -24,5 +23,3 @@ export class UserTable extends BaseTable {
     }),
   };
 }
-
-export const userSchema = tableToZod(UserTable);

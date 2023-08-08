@@ -1,8 +1,19 @@
 import { z } from 'zod';
-import { userSchema } from './user.table';
+import { UserTable } from './user.table';
 
-export const authDto = z.object({
-  user: userSchema.pick({
+export const userRegisterDTO = UserTable.schema().pick({
+  username: true,
+  email: true,
+  password: true,
+});
+
+export const userLoginDTO = UserTable.schema().pick({
+  email: true,
+  password: true,
+});
+
+export const authDTO = z.object({
+  user: UserTable.schema().pick({
     id: true,
     username: true,
     email: true,
@@ -10,7 +21,11 @@ export const authDto = z.object({
   token: z.string(),
 });
 
-export const userDto = userSchema
+export const usernameDTO = UserTable.schema().pick({
+  username: true,
+});
+
+export const userDTO = UserTable.schema()
   .pick({
     username: true,
   })

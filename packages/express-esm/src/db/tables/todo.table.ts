@@ -1,5 +1,4 @@
 import { BaseTable } from '../baseTable';
-import { tableToZod } from 'orchid-orm-schema-to-zod';
 
 export class TodoTable extends BaseTable {
   readonly table = 'todo';
@@ -10,5 +9,3 @@ export class TodoTable extends BaseTable {
     ...t.timestamps(),
   }));
 }
-
-export const TodoDto = tableToZod(TodoTable);

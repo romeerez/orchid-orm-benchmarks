@@ -1,11 +1,11 @@
 import { db } from './db/db';
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { TodoDto } from './db/tables/todo.table';
+import { TodoTable } from './db/tables/todo.table';
 
 const idParamDto = z.object({ id: z.coerce.number().int() });
 
-const createTodoDto = TodoDto.pick({
+const createTodoDto = TodoTable.schema().pick({
   text: true,
   done: true,
 });

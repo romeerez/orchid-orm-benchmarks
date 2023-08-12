@@ -21,30 +21,49 @@ Add dependencies:
 
 ```json
   "devDependencies": {
-    "vite": "4.3.9",
-    "vite-node": "0.32.0",
-    "vite-plugin-node": "3.0.2"
+    "vite": "^4.4.9",
+    "vite-node": "^0.34.1",
+    "vite-plugin-node": "^3.0.2"
+    "npm-run-all": "^4.1.5",
   }
 ```
 
 See a [vite config](./vite.config.ts): here we configure a dev server.
+
+A separate vite config file is needed to also bundle migrations: see [vite.migrations.ts](./vite.migrations.ts).
 
 Scripts are:
 
 ```json
   "scripts": {
     "start": "vite dev",
-    "db": "vite-node src/db/dbScript.ts --",
-    "build": "vite build",
     "start:prod": "node dist/app.mjs",
+    "db": "vite-node src/db/dbScript.ts --",
+    "db:prod": "node dist/dbScript.mjs",
+    "build": "run-p build:app build:migrations",
+    "build:app": "vite build",
+    "build:migrations": "vite --config vite.migrations.ts build",
     "types": "tsc --noEmit"
   },
 ```
 
+Provide a list of migrations to `rakeDb` by using a `import.meta.glob` trick:
+
+```ts
+export const change = rakeDb(config.database, {
+  // ...
+  migrations: import.meta.glob('./migrations/*.ts'),
+  // ...
+});
+```
+
 - `start`: starts a dev server in a watch mode. It supports the HRM (hot module replacement), so the code updates should be available faster than with other approaches.
-- `db`: migrations CLI, note the `--` in the end - it's needed to pass arguments from a command line.
-- `build`: bundles a server into a single `js` file.
 - `start:prod`: to launch the bundled app to make sure everything still works.
+- `db`: migrations CLI, note the `--` in the end - it's needed to pass arguments from a command line.
+- `db:prod`: to run compiled migrations.
+- `build`: compiles the app and migrations in parallel.
+- `build:app`: bundles a server into a single `js` file.
+- `build:migrations`: bundles migrations, each migration will be compiled into a separate file.
 - `types`: Vite is using `esbuld` to build TS files very fast, optionally it can use `swc`, and in any case it won't check the types. So we need to run the type checker ourselves.
 
 The following [tsconfig.json](./tsconfig.json) works fine with `vite-node`:
